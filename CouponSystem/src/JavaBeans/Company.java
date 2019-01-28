@@ -4,9 +4,11 @@ import java.util.ArrayList;
 public class Company {
 
 	/*
-	 * @Author - Evi
+	 * @Author - Oriel
 	 */
 	
+	
+	// Attributes 
 	
 	private long id;
 	private String compName;
@@ -14,6 +16,8 @@ public class Company {
 	private String email;
     ArrayList<Coupon> coupons = new ArrayList<Coupon>();
 
+    
+    // Ctors
 
     public Company() {
     }
@@ -25,6 +29,8 @@ public class Company {
     }
     
     
+    
+    // Methods
     
 	public long getId() {
 		return id;

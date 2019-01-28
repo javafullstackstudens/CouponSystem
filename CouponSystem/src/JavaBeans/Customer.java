@@ -7,14 +7,16 @@ import java.util.ArrayList;
 
 public class Customer {
 
+	
+	// Attributes 
+	
 	private long id;
 	private String CustomerName;
 	private String password;
-
 	ArrayList<Coupon> coupons = new ArrayList<Coupon>();
 	
-	String name = "";
 	
+	// Ctors
 	
 	public Customer() {
 	}
@@ -29,8 +31,8 @@ public class Customer {
 	
 	
 	
-	// Getters & Setters
-
+    // Methods
+	
 	public String getPassword() {
 		return password;
 	}
