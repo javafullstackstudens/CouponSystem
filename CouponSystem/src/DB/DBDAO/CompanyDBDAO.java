@@ -45,6 +45,25 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void removeCompany(Company company) throws Exception {
 		// TODO Auto-generated method stub
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		String sql = "DELETE FROM COMPANY WHERE id=?";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			conn.setAutoCommit(false);
+			pstmt.setLong(1, company.getId()); //Sets the designated parameter to the given Java long value
+			pstmt.executeUpdate();
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				throw new Exception("Database error");
+			}
+			throw new Exception("failed to remove product");
+		} finally {
+			conn.close();
+			System.out.println(company.getCompName()+" Removed !!!!");
+		}
 		
 	}
 

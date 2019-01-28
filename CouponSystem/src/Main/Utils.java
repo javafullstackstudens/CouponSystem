@@ -11,7 +11,6 @@ public class Utils {
 	return date;
     }
     
- 
     public static String getDriverData() {
 		return "org.apache.derby.jdbc.ClientDriver";
 	}

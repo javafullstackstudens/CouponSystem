@@ -25,10 +25,10 @@ public class Database {
 	private Database() {
 		try {
 		Database.createTables(DriverManager.getConnection(getDBUrl()));
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("Database couldn't be created");
 		}
-	}
+	} 
 
 	public static Database getDatabase() {
 		return instance;
@@ -45,7 +45,7 @@ public class Database {
 		return "jdbc:derby://localhost:3301/MyDB;create=true";
 	}
 
-	public static void createTables(Connection con) throws SQLException {
+	public static void createTables(Connection con) throws Exception  {
 		
 	    //Connection
 	
@@ -53,18 +53,21 @@ public class Database {
 		String sql;
 
 		// Table 1 creation (Company)
-		try {
-	    java.sql.Statement stmt = conn.createStatement();
-		sql = "create table Company("
-				+ "ID integer not null primary key generated always as identity(start with 1, increment by 1), "
-				+ "COMP_NAME varchar(30) not null, "
-				+ "PASSWORD varchar(30) not null," 
-				+ "EMAIL varchar(30) not null)";
-		stmt.executeUpdate(sql);
-		System.out.println("success:" + sql);
+        try {
+    	    java.sql.Statement stmt = conn.createStatement();
+    		sql = "create table Company("
+    				+ "ID integer not null primary key generated always as identity(start with 1, increment by 1), "
+    				+ "COMP_NAME varchar(30) not null, "
+    				+ "PASSWORD varchar(30) not null," 
+    				+ "EMAIL varchar(30) not null)";
+    		stmt.executeUpdate(sql);
+    		System.out.println("success:" + sql);	
 		} catch (SQLException e) {
+			// TODO: handle exception
 			System.out.println(e.getMessage());
 		}
+
+
 		
 		// Table 2 creation (Customer)
 		try {
@@ -120,9 +123,11 @@ public class Database {
 				+ "COUPON_ID integer not null REFERENCES Coupon(ID))";
 		stmt5.executeUpdate(sql);
 		System.out.println("success:" + sql);
-		}catch (Exception e) {
+		
+		}catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		
 		finally {
 			conn.close();
 		}
