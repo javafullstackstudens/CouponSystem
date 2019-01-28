@@ -57,9 +57,8 @@ public class CompanyDBDAO implements CompanyDAO {
 			try {
 				conn.rollback();
 			} catch (SQLException e1) {
-				throw new Exception("Database error");
+				throw new Exception(e1.getMessage());
 			}
-			throw new Exception("failed to remove" + company.getCompName());
 		} finally {
 			conn.close();
 			System.out.println(company.getCompName()+" Removed !!!!");
