@@ -20,6 +20,8 @@ public class Test {
 
 		Database.getDatabase().createTables(con);
 		
+		Database.getDatabase().selectTableCompany();
+		
 		
 	}
 

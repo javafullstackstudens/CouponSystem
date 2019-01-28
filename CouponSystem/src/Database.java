@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -188,6 +189,26 @@ public class Database {
 
 	}
 	
+	public static void selectTableCompany() throws SQLException {
+
+		conn = DriverManager.getConnection(getDBUrl());
+		java.sql.Statement stmt = conn.createStatement();
+		java.sql.ResultSet results = ((java.sql.Statement) stmt).executeQuery("SELECT * FROM COMPANY");
+		ResultSetMetaData rsmd = results.getMetaData();
+		int numberCols = rsmd.getColumnCount();
+		for (int i = 1; i <= numberCols; i++)
+			System.out.print(rsmd.getColumnLabel(i) + "\t\t");
+		System.out.println("\n-----------------------------------------------------------------------------------");
+		while (results.next()) {
+			int id = results.getInt(1);
+			String restName = results.getString(2);
+			String cityName = results.getString(3);
+			String email = results.getString(4);
+			System.out.println(id + "\t\t" + restName + "\t\t\t" + cityName + "\t\t\t" + email);
+		}
+		results.close();
+		conn.close();
+	}
 	
 	
 	
