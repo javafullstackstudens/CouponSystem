@@ -23,7 +23,7 @@ public class CompanyFacade {
 	}
 
 	public void removeCompany(Company company) throws Exception {
-		compDAO.insertCompany(company);
+		compDAO.removeCompany(company);
 	}
 
 	public void updateCompany(Company company, String newName,String newPassword, String newEmail) throws Exception {
