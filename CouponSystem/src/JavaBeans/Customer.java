@@ -1,3 +1,4 @@
+package JavaBeans;
 import java.util.ArrayList;
 
 /*
@@ -6,6 +7,8 @@ import java.util.ArrayList;
 
 public class Customer {
 
+	
+	// Attributes
 	private long id;
 	private String CustomerName;
 	private String password;
@@ -15,9 +18,13 @@ public class Customer {
 	String name = "";
 	
 	
+	// Ctors
+	
+	// Empty Ctor
 	public Customer() {
 	}
 	
+	// Full Ctor
 	public Customer(long id, String name, String pass) {
 		this.id = id;
 		this.CustomerName = name;

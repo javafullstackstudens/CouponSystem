@@ -1,7 +1,9 @@
-import java.sql.Connection;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 
+import DB.Database;
+import JavaBeans.*;
 
 
 public class Test {

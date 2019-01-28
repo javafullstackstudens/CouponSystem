@@ -1,3 +1,4 @@
+package DB;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -5,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
+
+import JavaBeans.Company;
+import JavaBeans.Coupon;
+import JavaBeans.Customer;
 
 
 
@@ -209,6 +214,10 @@ public class Database {
 		results.close();
 		conn.close();
 	}
+	
+	
+	
+	
 	
 	
 	
