@@ -1,6 +1,6 @@
-package DBDAO;
+package DB.DBDAO;
 
-import DAO.CouponDAO;
+import DB.DAO.CouponDAO;
 
 public class CouponDBDAO implements CouponDAO {
 

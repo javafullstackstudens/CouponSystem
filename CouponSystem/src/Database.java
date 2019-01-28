@@ -6,6 +6,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+import JavaBeans.Company;
+import JavaBeans.Coupon;
+import JavaBeans.Customer;
+
 
 
 public class Database {
