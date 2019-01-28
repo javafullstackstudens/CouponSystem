@@ -1,6 +1,6 @@
-package DBDAO;
+package DB.DBDAO;
 
-import DAO.CustomerDAO;
+import DB.DAO.CustomerDAO;
 
 public class CustomerDBDAO implements CustomerDAO {
 

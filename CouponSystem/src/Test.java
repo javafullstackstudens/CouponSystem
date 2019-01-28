@@ -2,6 +2,11 @@ import java.sql.Connection;
 
 import java.sql.DriverManager;
 
+import JavaBeans.Company;
+import JavaBeans.Coupon;
+import JavaBeans.CouponType;
+import JavaBeans.Customer;
+
 
 
 public class Test {
