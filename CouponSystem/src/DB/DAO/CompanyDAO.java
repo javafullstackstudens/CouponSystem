@@ -1,29 +1,19 @@
 package DB.DAO;
-import DB.DBDAO.*;
 import java.util.Set;
 import JavaBeans.*;
 
 public interface CompanyDAO {
       
 
-		static void insertCoupon(Coupon coupon) throws Exception{
-			
-		}
+		void insertCompany(Company company) throws Exception;
 
-		static void removeProduct(Coupon product) throws Exception{
-		}
+		void removeCompany(Company company) throws Exception;
 
-		static void updateProduct(Coupon product) throws Exception{
-		}
+		void updateCompany(Company company) throws Exception;
 
-		static Coupon getCoupon(int id) throws Exception {
-			return null;
-		}
+		Coupon getCompany(int id) throws Exception;
 		
+		Set<Coupon> getAllCompanies() throws Exception;
 
-		static Set<Coupon> getAllCoupouns() throws Exception{
-			return null;
-			
-		}
-
+		
 	}

@@ -1,3 +1,4 @@
+package DB;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -22,6 +23,11 @@ public class Database {
 	static Connection conn;
 
 	private Database() {
+		try {
+		Database.createTables(DriverManager.getConnection(getDBUrl()));
+		} catch (SQLException e) {
+			System.out.println("Database couldn't be created");
+		}
 	}
 
 	public static Database getDatabase() {
@@ -122,76 +128,9 @@ public class Database {
 		}
 }
 
-	
-	
-	public void insertCompany(Company company) throws Exception {
-		conn = DriverManager.getConnection(getDBUrl());
-		String sql = "INSERT INTO COMPANY (COMP_NAME,PASSWORD,EMAIL)  VALUES(?,?,?)";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-			pstmt.setString(1, company.getCompName());
-			pstmt.setString(2, company.getPassword());
-			pstmt.setString(3, company.getEmail());
-			pstmt.executeUpdate();
-
-			System.out.println("Company created" + company.toString());
-
-		} catch (SQLException e) {
-			throw new Exception("Company creation failed");
-		} finally {
-			conn.close();
-		}
-	}
 
 	
-	public void insertCoupon(Coupon coupon) throws Exception{
-		
-		conn = DriverManager.getConnection(getDBUrl());
 
-		
-		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE) VALUES(?,?,?,?,?,?,?,?)";
-        try{
-        	
-        	
-        	PreparedStatement pstmt = conn.prepareStatement(sql);
-        	LocalDate localDate = LocalDate.now();
-        	Date date = java.sql.Date.valueOf(localDate);
-        
-        	pstmt.setString(1, coupon.getTitle());
-			pstmt.setDate(2, date);
-			pstmt.setDate(3, date);
-			pstmt.setInt(4, coupon.getAmount());
-			pstmt.setString(5, coupon.getType().name());	
-			pstmt.setString(6, coupon.getMessage());
-			pstmt.setDouble(7, coupon.getPrice());
-			pstmt.setString(8, coupon.getImage());	
-			pstmt.executeUpdate();
-			
-        }catch(SQLException e) {
-        	throw new Exception("Coupon creation faild");
-        } finally {
-        	conn.close();
-        }
-	}
-	
-	
-	
-	public void insertCustomer(Customer customer) throws Exception{
-		
-		conn = DriverManager.getConnection(getDBUrl());
-        String sql = "INSERT INTO CUSTOMER (CUST_NAME,PASSWORD) VALUES (?,?)";
-        try {
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, customer.getCustomerName());
-		pstmt.setString(2, customer.getPassword());
-		pstmt.executeUpdate();
-        } catch (SQLException e) {
-			throw new Exception("Customer creation faild");
-		} finally {
-			conn.close();
-		}
-
-	}
 	
 	public static void selectTableCompany() throws SQLException {
 

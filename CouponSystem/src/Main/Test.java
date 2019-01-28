@@ -1,7 +1,10 @@
+package Main;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
 
+import DB.Database;
+import Facade.CompanyFacade;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
@@ -13,8 +16,6 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-		Connection con = DriverManager.getConnection(Database.getDBUrl());
-		
 		Class.forName("org.apache.derby.jdbc.ClientDriver");
 	
 		
@@ -23,9 +24,9 @@ public class Test {
 		Customer customer = new Customer(123,"Oriel","1234");
 		
 
-		Database.getDatabase().createTables(con);
+		CompanyFacade companyFacade = new CompanyFacade();
 		
-		Database.getDatabase().selectTableCompany();
+		companyFacade.insertCompany(company);
 		
 		
 	}

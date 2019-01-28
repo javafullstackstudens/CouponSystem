@@ -7,6 +7,8 @@ import java.util.Date;
 
 
 public class Coupon {
+
+	// Attributes 
 	
 	private long id;
 	private String title;
@@ -17,6 +19,8 @@ public class Coupon {
 	private String message;
 	private double price;
 	private String image;
+	
+	// Ctors
 	
 	public Coupon() {
 	}
@@ -34,7 +38,7 @@ public class Coupon {
 	}
 	
 	
-	
+	// Methods
 	
 	public long getId() {
 		return id;
