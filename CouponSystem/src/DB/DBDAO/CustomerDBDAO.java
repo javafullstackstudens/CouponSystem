@@ -1,4 +1,5 @@
 package DB.DBDAO;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -33,6 +34,7 @@ public void insertCustomer(Customer customer) throws Exception{
 		pstmt.setString(1, customer.getCustomerName());
 		pstmt.setString(2, customer.getPassword());
 		pstmt.executeUpdate();
+		System.out.println("Customer " + customer.getCustomerName() + " inserted successfully");
         } catch (SQLException e) {
 			throw new Exception("Customer creation faild");
 		} finally {

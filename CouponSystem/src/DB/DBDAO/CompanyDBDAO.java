@@ -32,7 +32,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			pstmt.setString(2, company.getPassword());
 			pstmt.setString(3, company.getEmail());
 			pstmt.executeUpdate();
-			System.out.println("Company created" + company.toString());
+			System.out.println("Company " + company.getCompName() + " inserted successfully");
 		} catch (SQLException e) {
 			throw new Exception("Company creation failed");
 		} finally {
@@ -53,6 +53,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			pstmt.setLong(1, company.getId()); //Sets the designated parameter to the given Java long value
 			pstmt.executeUpdate();
 			conn.commit();
+			System.out.println(company.getCompName()+" successfully Removed from the DB");
 		} catch (SQLException e) {
 			try {
 				conn.rollback();
@@ -61,7 +62,6 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 		} finally {
 			conn.close();
-			System.out.println(company.getCompName()+" Removed !!!!");
 		}
 		
 	}

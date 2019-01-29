@@ -1,7 +1,6 @@
 package Facade;
 
 import java.util.Set;
-
 import DB.DBDAO.CompanyDBDAO;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
@@ -38,7 +37,7 @@ public class CompanyFacade {
 	}
 
 	public Set<Coupon> getAllCompanies() throws Exception {
-		// ProductDBDAO comDAO=new ProductDBDAO();
+	
 		return compDAO.getAllCompanies();
 	}
 	
