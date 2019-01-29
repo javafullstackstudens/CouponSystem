@@ -26,6 +26,7 @@ public class Company {
     	this.compName = compName;
     	this.password = password;
     	this.email = email;
+    	this.id = id; 
     }
     
     

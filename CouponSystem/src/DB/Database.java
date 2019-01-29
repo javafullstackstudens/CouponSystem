@@ -56,7 +56,7 @@ public class Database {
         try {
     	    java.sql.Statement stmt = conn.createStatement();
     		sql = "create table Company("
-    				+ "ID integer not null primary key generated always as identity(start with 1, increment by 1), "
+    				+ "ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), "
     				+ "COMP_NAME varchar(30) not null, "
     				+ "PASSWORD varchar(30) not null," 
     				+ "EMAIL varchar(30) not null)";
