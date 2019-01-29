@@ -1,8 +1,7 @@
 package Main;
+
 import java.sql.Connection;
-
 import java.sql.DriverManager;
-
 import DB.Database;
 import Facade.CompanyFacade;
 import JavaBeans.Company;
@@ -25,8 +24,8 @@ public class Test {
 
 		CompanyFacade companyFacade = new CompanyFacade();
 		
-        companyFacade.insertCompany(company);
-		companyFacade.removeCompany(company);  
+        companyFacade.removeCompany(company);
+		 
 		
 		
 	}

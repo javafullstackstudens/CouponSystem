@@ -1,4 +1,5 @@
 package DB.DBDAO;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -22,7 +23,7 @@ public class CouponDBDAO implements CouponDAO {
 	// Methods that DBDAO Must use from DAO
 
 	@Override
-public void insertCoupon(Coupon coupon) throws Exception{
+        public void insertCoupon(Coupon coupon) throws Exception{
 		conn = DriverManager.getConnection(Utils.getDBUrl());
 		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE) VALUES(?,?,?,?,?,?,?,?)";
         try{
@@ -39,6 +40,7 @@ public void insertCoupon(Coupon coupon) throws Exception{
 			pstmt.setDouble(7, coupon.getPrice());
 			pstmt.setString(8, coupon.getImage());	
 		    pstmt.executeUpdate();
+		    System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
 			
         }catch(SQLException e) {
         	throw new Exception("Coupon creation faild");
