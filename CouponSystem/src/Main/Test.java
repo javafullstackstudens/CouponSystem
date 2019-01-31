@@ -13,6 +13,7 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 
+		int i = 0 ; 
 		Class.forName("org.apache.derby.jdbc.ClientDriver");
 
 		Company company = new Company(1, "Amdocs", "12345", "oriel@test.com");
@@ -22,7 +23,14 @@ public class Test {
 		Database.getDatabase();
 		CompanyFacade companyFacade = new CompanyFacade();
 		
-		Company company_remove = new Company(5, "Amdocs", "12345", "oriel@test.com");
+//		for(int j=0; j<10; j++ )
+//		{ 
+//			String strl = "" + j; 
+//			Company c = new Company(1, "Amdocs",strl, "oriel@test.com");
+//			companyFacade.insertCompany(c);
+//		}
+//		
+		Company company_remove = new Company(7, "Amdocs", "4", "oriel@test.com");
 		companyFacade.removeCompany(company_remove);
 
 	}

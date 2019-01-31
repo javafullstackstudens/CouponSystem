@@ -56,7 +56,7 @@ public class Database {
         try {
     	    java.sql.Statement stmt = conn.createStatement();
     		sql = "create table Company("
-    				+ "ID INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), "
+    				+ "ID bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1), "
     				+ "COMP_NAME varchar(30) not null, "
     				+ "PASSWORD varchar(30) not null," 
     				+ "EMAIL varchar(30) not null)";
@@ -73,7 +73,7 @@ public class Database {
 		try {
 		java.sql.Statement stmt2 = conn.createStatement();
 		sql = "create table Customer("
-				+ "ID integer not null primary key generated always as identity(start with 1, increment by 1), "
+				+ "ID bigint not null primary key generated always as identity(start with 1, increment by 1), "
 				+ "CUST_NAME varchar(30) not null, " 
 				+ "PASSWORD varchar(30) not null)" ;
 		stmt2.executeUpdate(sql);
@@ -86,7 +86,7 @@ public class Database {
 		try {
 		java.sql.Statement stmt3 = conn.createStatement();
 		sql = "create table Coupon("
-				+ "ID integer not null primary key generated always as identity(start with 1, increment by 1), "
+				+ "ID bigint not null primary key generated always as identity(start with 1, increment by 1), "
 				+ "TITLE varchar(30) not null, " 
 				+ "START_DATE DATE not null, " 
 				+ "END_DATE DATE not null,"
@@ -106,8 +106,8 @@ public class Database {
 		try {
 		java.sql.Statement stmt4 = conn.createStatement();
 		sql = "create table Customer_Coupon("
-				+ "CUST_ID integer not null REFERENCES Customer(ID),"
-				+ "COUPON_ID integer not null REFERENCES Coupon(ID))";
+				+ "CUST_ID bigint not null REFERENCES Customer(ID),"
+				+ "COUPON_ID bigint not null REFERENCES Coupon(ID))";
 		stmt4.executeUpdate(sql);
 		System.out.println("success:" + sql);
 		} catch (SQLException e) {
@@ -119,8 +119,8 @@ public class Database {
 		try {
 		java.sql.Statement stmt5 = conn.createStatement();
 		sql = "create table Company_Coupon("
-				+ "COMP_ID integer not null REFERENCES Company(ID),"
-				+ "COUPON_ID integer not null REFERENCES Coupon(ID))";
+				+ "COMP_ID bigint not null REFERENCES Company(ID),"
+				+ "COUPON_ID bigint not null REFERENCES Coupon(ID))";
 		stmt5.executeUpdate(sql);
 		System.out.println("success:" + sql);
 		
