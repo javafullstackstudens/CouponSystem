@@ -18,7 +18,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	
 	Connection conn;
 	
-	
+
 	
 	// Methods that DBDAO Must use from DAO
 	
@@ -43,6 +43,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	
 
 	@Override
+	//**This method remove an company by ID key  **//
 	public void removeCompany(Company company) throws Exception {
 		// TODO Auto-generated method stub
 		conn = DriverManager.getConnection(Utils.getDBUrl());
