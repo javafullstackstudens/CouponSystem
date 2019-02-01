@@ -20,7 +20,7 @@ public class Coupon {
 	private double price;
 	private String image;
 	
-	// Ctors
+	// CTORS
 	
 	public Coupon() {
 	}
@@ -95,7 +95,6 @@ public class Coupon {
 		this.image = image;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Coupon [id=" + id + ", title=" + title + ", startDate=" + startDate + ", endDate=" + endDate

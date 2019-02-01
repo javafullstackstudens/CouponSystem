@@ -1,6 +1,10 @@
 package Main;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+
+import javafx.scene.chart.PieChart.Data;
 
 
 public class Utils {
@@ -9,6 +13,13 @@ public class Utils {
     LocalDate localDate = LocalDate.now();
 	Date date = java.sql.Date.valueOf(localDate);
 	return date;
+    }
+    
+    public static Date endDate( int numDays ) 
+    { 
+    	 LocalDate localDate = LocalDate.now().plusDays(numDays);
+    	 Date date = java.sql.Date.valueOf(localDate);
+         return date;
     }
     
     public static String getDriverData() {
