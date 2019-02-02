@@ -11,7 +11,7 @@ public interface CustomerDAO {
 
 	void updateCustomer(Customer customer) throws Exception;
 
-	Coupon getCustomer(int id) throws Exception;
+	Customer getCustomer(int id) throws Exception;
 	
 	Set<Coupon> getAllCustomers() throws Exception;
 	

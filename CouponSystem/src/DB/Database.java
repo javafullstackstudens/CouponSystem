@@ -22,6 +22,8 @@ public class Database {
 	
 	private static Database instance = new Database();
 	static Connection conn;
+	
+	
 
 	private Database() {
 		try {
@@ -35,15 +37,17 @@ public class Database {
 		return instance;
 	}
 
+	// JDBC driver name and database URL
 	public static String getDriverData() {
 		return "org.apache.derby.jdbc.ClientDriver";
 	}
 
-	// the local Port 3301
-	// Name of database - JBDB
-	
 	public static String getDBUrl() {
 		return "jdbc:derby://localhost:3301/MyDB;create=true";
+		
+		//create a database by supplying a new database name in the connection URL and specifying create=true
+		// the local Port 3301
+		// Name of database - MyDB
 	}
 
 	public static void createTables(Connection con) throws Exception  {

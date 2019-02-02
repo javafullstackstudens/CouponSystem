@@ -4,8 +4,8 @@ import JavaBeans.*;
 
 public interface CompanyDAO {
       
-
-		void insertCompany(Company company) throws Exception;
+		
+	    void insertCompany(Company company) throws Exception;
 
 		void removeCompany(Company company) throws Exception;
 
