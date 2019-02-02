@@ -5,7 +5,10 @@ import java.sql.DriverManager;
 
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
+import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
+
 import DB.Database;
+import DB.DBDAO.CompanyDBDAO;
 import DB.DBDAO.CouponDBDAO;
 import DB.DBDAO.CustomerDBDAO;
 import Facade.CompanyFacade;
@@ -21,24 +24,24 @@ public class Test {
 
 
 		Class.forName("org.apache.derby.jdbc.ClientDriver");
-
-		Company company = new Company(1, "Amdocs", "12345", "oriel@test.com");
+		Database.getDatabase(); 
+		Company company = new Company(4, "mPrest", "12345", "oriel@test.com");
 		Coupon coupon = new Coupon(1, "The eucalyptus", Utils.getDate(), Utils.endDate(20), 1245, CouponType.HEALTH,"wtf", 1251, "image");
-		Customer customer = new Customer(123, "Oriel", "1234");
+		Customer customer = new Customer(6, "Oriel", "1234");
 
 		CouponDBDAO Co = new CouponDBDAO(); 
 		Co.insertCoupon(coupon);
 		Company c = new Company(); 
+		CompanyDBDAO companyDBDAO = new CompanyDBDAO(); 
+		CustomerDBDAO customerDBDAO = new CustomerDBDAO(); 
+
+		customerDBDAO.removeCustomer(customer);
+		Co.removeCoupon(coupon);
+
 		
-		CustomerDBDAO CDB = new CustomerDBDAO(); 
-		
-		for(int i=0 ; i<10 ; i++) { 
-		CDB.insertCustomer(customer);	
-			
 		}
 
 		
 
 	}
 
-}

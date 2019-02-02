@@ -17,27 +17,42 @@ public class CompanyDBDAO implements CompanyDAO {
 	// Attributes
 	
 	Connection conn;
-	
 
-	
 	// Methods that DBDAO Must use from DAO
 	
 	@Override
 	public void insertCompany(Company company) throws Exception {
-		
+
+	    //Open a connection
 		conn = DriverManager.getConnection(Utils.getDBUrl());
+		//Define the Execute query
 		String sql = "INSERT INTO COMPANY (COMP_NAME,PASSWORD,EMAIL)  VALUES(?,?,?)";
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+		PreparedStatement pstmt = null;
+		try {
+		    pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, company.getCompName());
 			pstmt.setString(2, company.getPassword());
 			pstmt.setString(3, company.getEmail());
 			pstmt.executeUpdate();
-			System.out.println("Company " + company.getCompName() + " inserted successfully");
 		} catch (SQLException e) {
+			//Handle errors for JDBC
 			throw new Exception("Company creation failed");
 		} finally {
-			conn.close();
+			//finally block used to close resources
+			try {
+				if(pstmt!=null)
+					conn.close();	
+			} catch (SQLException se) {
+				// do nothing
+			}
+			try {
+				if(conn!=null)
+					conn.close();	
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}	
 		}
+		System.out.println("Company " + company.getCompName() + " inserted successfully");
 	}
 	
 	
@@ -45,24 +60,41 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	//**This method remove an company by ID key  **//
 	public void removeCompany(Company company) throws Exception {
-		// TODO Auto-generated method stub
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		String sql = "DELETE FROM COMPANY WHERE id=?";
+		
 
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			conn.setAutoCommit(false);
+	    //Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		//Define the Execute query
+		String sql = "DELETE FROM COMPANY WHERE id=?";
+		PreparedStatement pstmt = null;
+		try {
+		    pstmt = conn.prepareStatement(sql);
+			conn.setAutoCommit(false);//turn off auto-commit
 			pstmt.setLong(1, company.getId()); //Sets the designated parameter to the given Java long value
 			pstmt.executeUpdate();
-			conn.commit();
+			conn.commit();//Commit the changes,If there is no error.
 			System.out.println(company.getCompName()+" successfully Removed from the DB");
 		} catch (SQLException e) {
 			try {
-				conn.rollback();
+				conn.rollback();//roll back updates to the database , If there is error 
 			} catch (SQLException e1) {
 				throw new Exception(e1.getMessage());
 			}
 		} finally {
-			conn.close();
+			// finally block used to close resources
+			try {
+				if (pstmt != null)
+					conn.close();
+			} catch (SQLException se) {
+		    // do nothing
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+
 		}
 		
 	}
