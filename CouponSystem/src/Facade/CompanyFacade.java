@@ -5,40 +5,41 @@ import DB.DBDAO.CompanyDBDAO;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 
-public class CompanyFacade {
+public class CompanyFacade implements CouponClientFacade {
 
-	private CompanyDBDAO compDAO = new CompanyDBDAO();
-	private Company company;
-
-	public CompanyFacade(Company c) {
-		this.company = c;
-	}
-
-	public CompanyFacade() {
-	}
-
-	public void insertCompany(Company company) throws Exception {
-		compDAO.insertCompany(company);
-	}
-
-	public void removeCompany(Company company) throws Exception {
-		compDAO.removeCompany(company);
-	}
-
-	public void updateCompany(Company company, String newName,String newPassword, String newEmail) throws Exception {
-		company.setCompName(newName);
-		company.setPassword(newPassword);
-		company.setEmail(newEmail);
-		compDAO.updateCompany(company);
-	}
-
-	public Company getCompany() {
-		return company;
-	}
-
-	public Set<Company> getAllCompanies() throws Exception {
-	
-		return compDAO.getAllCompanies();
+	@Override
+	public CouponClientFacade login(String name, String password, String clientType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
+	/*****************Coupon Methods ********************/
+	public void createCoupon(Coupon coupon) { 
+		
+	}
+	
+	public void removeCoupon(Coupon coupon) {
+		
+	}
+	
+	public void updateCoupon(Coupon coupon) {
+		
+	}
+
+	public Coupon getCopon(long id ) {
+		return null; 
+		
+	}
+	
+	public Set<Coupon> getAllCoupons() 
+
+	{
+		return null; 
+		
+	}
+	
+	
+	
+
+
 }

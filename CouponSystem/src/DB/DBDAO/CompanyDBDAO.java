@@ -113,11 +113,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		
 	}
 
-	@Override
-	public Coupon getCompany(int id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	@Override
 	public Set<Company> getAllCompanies() throws Exception {
@@ -137,6 +133,12 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	@Override
 	public Boolean login(String compName, String password) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Company getCompany(long id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

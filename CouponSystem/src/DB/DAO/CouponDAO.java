@@ -15,7 +15,7 @@ public interface CouponDAO {
 
 	void updateCoupon(Coupon coupon) throws Exception;
 
-	Coupon getCoupon(int id) throws Exception;
+	Coupon getCoupon(long id) throws Exception;
 	
 	Set<Coupon> getAllCoupouns() throws Exception;
 	

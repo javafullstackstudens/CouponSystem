@@ -85,7 +85,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			try {
 				conn.rollback();// roll back updates to the database , If there is error
 			} catch (SQLException e1) {
-				throw new Exception(e1.getMessage());
+				throw new Exception("The Rollback connection failed");
 			}
 		} finally {
 			// finally block used to close resources
@@ -140,7 +140,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public Customer getCustomer(int id) throws Exception {
+	public Customer getCustomer(long id) throws Exception {
 		
 		Customer customer = new Customer(); 
 		// Open a connection

@@ -16,7 +16,7 @@ public interface CustomerDAO {
 
 	void updateCustomer(Customer customer) throws Exception;
 
-	Customer getCustomer(int id) throws Exception;
+	Customer getCustomer(long id) throws Exception;
 	
 	Set<Company> getAllCustomer() throws Exception;	
 	

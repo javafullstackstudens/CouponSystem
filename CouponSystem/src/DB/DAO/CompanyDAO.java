@@ -13,7 +13,7 @@ public interface CompanyDAO {
 
 		void updateCompany(Company company) throws Exception;
 
-		Coupon getCompany(int id) throws Exception;
+		Company getCompany(long id) throws Exception;
 		
 		Set<Company> getAllCompanies() throws Exception;	
 		

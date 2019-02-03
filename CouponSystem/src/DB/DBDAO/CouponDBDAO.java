@@ -119,7 +119,7 @@ public class CouponDBDAO implements CouponDAO {
 	}
 
 	@Override
-	public Coupon getCoupon(int id) throws Exception {
+	public Coupon getCoupon(long id) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -136,5 +136,7 @@ public class CouponDBDAO implements CouponDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 }
