@@ -6,12 +6,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Set;
 
 import com.sun.org.apache.bcel.internal.generic.I2D;
 import com.sun.xml.internal.bind.v2.TODO;
 
 import DB.DAO.CustomerDAO;
+import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
 import Main.Utils;
@@ -24,6 +26,12 @@ public class CustomerDBDAO implements CustomerDAO {
 	Connection conn;
 
 	// Methods that DBDAO Must use from DAO
+	
+	@Override
+	public void createCustomer(Customer customer) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void insertCustomer(Customer customer) throws Exception {
@@ -174,9 +182,22 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public Set<Coupon> getAllCustomers() throws Exception {
+	public Set<Company> getAllCustomer() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Set<Coupon> getCoupons() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Boolean login(String compName, String password) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

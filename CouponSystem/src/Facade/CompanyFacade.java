@@ -36,7 +36,7 @@ public class CompanyFacade {
 		return company;
 	}
 
-	public Set<Coupon> getAllCompanies() throws Exception {
+	public Set<Company> getAllCompanies() throws Exception {
 	
 		return compDAO.getAllCompanies();
 	}

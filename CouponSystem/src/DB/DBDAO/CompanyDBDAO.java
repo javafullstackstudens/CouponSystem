@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Set;
 import Main.*;
 import DB.DAO.CompanyDAO;
@@ -19,6 +20,12 @@ public class CompanyDBDAO implements CompanyDAO {
 	Connection conn;
 
 	// Methods that DBDAO Must use from DAO
+	
+	@Override
+	public void createCompany(Company company) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	@Override
 	public void insertCompany(Company company) throws Exception {
@@ -38,19 +45,20 @@ public class CompanyDBDAO implements CompanyDAO {
 			//Handle errors for JDBC
 			throw new Exception("Company creation failed");
 		} finally {
-			//finally block used to close resources
+			// finally block used to close resources
 			try {
-				if(pstmt!=null)
-					conn.close();	
+				if (pstmt != null)
+					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new Exception("The close connection action faild"); 
 			}
 			try {
-				if(conn!=null)
-					conn.close();	
+				if (conn != null)
+					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
-			}	
+				throw new Exception("The close connection action faild"); 
+			}
+
 		}
 		System.out.println("Company " + company.getCompName() + " inserted successfully");
 	}
@@ -86,13 +94,13 @@ public class CompanyDBDAO implements CompanyDAO {
 				if (pstmt != null)
 					conn.close();
 			} catch (SQLException se) {
-		    // do nothing
+				throw new Exception("The close connection action faild"); 
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new Exception("The close connection action faild"); 
 			}
 
 		}
@@ -112,7 +120,23 @@ public class CompanyDBDAO implements CompanyDAO {
 	}
 
 	@Override
-	public Set<Coupon> getAllCompanies() throws Exception {
+	public Set<Company> getAllCompanies() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Set<Coupon> getCoupons() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public Boolean login(String compName, String password) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

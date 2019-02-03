@@ -23,6 +23,12 @@ public class CouponDBDAO implements CouponDAO {
 	// Methods that DBDAO Must use from DAO
 
 	@Override
+	public void createCoupon(Coupon coupon) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
 	// **This method remove an company by ID key **//
 	public void insertCoupon(Coupon coupon) throws Exception {
 
@@ -52,15 +58,16 @@ public class CouponDBDAO implements CouponDAO {
 			try {
 				if (pstmt != null)
 					conn.close();
-			} catch (SQLException e) {
-				// do nothing
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
 			}
 			try {
 				if (conn != null)
 					conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
 			}
+
 		}
 		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
 	}
@@ -92,13 +99,13 @@ public class CouponDBDAO implements CouponDAO {
 				if (pstmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new Exception("The close connection action faild"); 
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new Exception("The close connection action faild"); 
 			}
 
 		}
@@ -119,6 +126,13 @@ public class CouponDBDAO implements CouponDAO {
 
 	@Override
 	public Set<Coupon> getAllCoupouns() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public Set<Coupon> getCouponByType(Coupon coupon) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

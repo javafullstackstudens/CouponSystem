@@ -1,10 +1,12 @@
 package DB.DAO;
+import java.util.ArrayList;
 import java.util.Set;
 import JavaBeans.*;
 
 public interface CompanyDAO {
       
-		
+		void createCompany(Company company ) throws Exception; 
+	
 	    void insertCompany(Company company) throws Exception;
 
 		void removeCompany(Company company) throws Exception;
@@ -13,7 +15,11 @@ public interface CompanyDAO {
 
 		Coupon getCompany(int id) throws Exception;
 		
-		Set<Coupon> getAllCompanies() throws Exception;
-
+		Set<Company> getAllCompanies() throws Exception;	
+		
+		Set<Coupon> getCoupons() throws Exception; 
+		
+		Boolean login(String compName, String password) throws Exception; 
+	
 		
 	}
