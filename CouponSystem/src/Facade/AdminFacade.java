@@ -70,7 +70,7 @@ public class AdminFacade implements CouponClientFacade {
 		
 	}
 	
-	public Set<Company> getAllCustomers() throws Exception{
+	public Set<Customer> getAllCustomers() throws Exception{
 		
 		return custDAO.getAllCustomer(); 
 	}

@@ -1,15 +1,19 @@
 package DB.DBDAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import Main.*;
+import DB.ConnPool;
 import DB.DAO.CompanyDAO;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
+import JavaBeans.CouponType;
 
 
 public class CompanyDBDAO implements CompanyDAO {
@@ -17,20 +21,16 @@ public class CompanyDBDAO implements CompanyDAO {
 	
 	// Attributes
 	
-	Connection conn;
-
+	static Connection conn;
+	
+	ConnPool Pool = ConnPool.getInstance(); 
+	
 	// Methods that DBDAO Must use from DAO
 	
-	@Override
-	public void createCompany(Company company) throws Exception {
-		// TODO Auto-generated method stub
+		@Override
 		
-	}
-	
-	@Override
-	public void insertCompany(Company company) throws Exception {
-
-	    //Open a connection
+	public void createCompany(Company company) throws Exception {
+		 //Open a connection
 		conn = DriverManager.getConnection(Utils.getDBUrl());
 		//Define the Execute query
 		String sql = "INSERT INTO COMPANY (COMP_NAME,PASSWORD,EMAIL)  VALUES(?,?,?)";
@@ -61,10 +61,9 @@ public class CompanyDBDAO implements CompanyDAO {
 
 		}
 		System.out.println("Company " + company.getCompName() + " inserted successfully");
+		
 	}
 	
-	
-
 	@Override
 	//**This method remove an company by ID key  **//
 	public void removeCompany(Company company) throws Exception {
@@ -109,39 +108,247 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	@Override
 	public void updateCompany(Company company) throws Exception {
-		// TODO Auto-generated method stub
+		// create statment 
+		conn = DriverManager.getConnection(Utils.getDBUrl()); 
+		java.sql.Statement stmt = null ; 
+		
+		try {
+			stmt = conn.createStatement(); 
+			String sql = "UPDATE COMPANY " + "SET COMP_NAME='" + company.getCompName() + "', PASSWORD = '" + company.getPassword() +"', EMAIL = '" + company.getEmail() + "' WHERE ID=" + company.getId();
+			stmt.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			throw new Exception("update customer failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
+
+		}
+		System.out.println(company.getCompName() + " successfully Updated from the DB");
+		
 		
 	}
+	
+	@Override
+	public Company getCompany(long id) throws Exception {
+		
+		Company company = new Company(); 
+		//open a Connection to the db 
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+		
+		try {
+			stmt=conn.createStatement(); 
+			//build The SQL query 
+			String sql = "SELECT * FROM COMPANY WHERE ID=" +id; 
+			//Set the results from the database 
+			ResultSet resultSet = stmt.executeQuery(sql); 
+			//constructor the object, retrieve the attributes from the results
+			resultSet.next(); 
+			company.setId(resultSet.getLong(1));;
+			company.setCompName(resultSet.getString(2));
+			company.setPassword(resultSet.getString(3));
+			company.setEmail(resultSet.getString(4));
+			
+			//TODO - Add the coupons list from the ArrayCollection 
+			
+		} catch (SQLException e) {
+			throw new Exception("get company failed with id=" + id);
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
 
-
+		}
+		
+		return company;
+	}
 
 	@Override
 	public Set<Company> getAllCompanies() throws Exception {
-		// TODO Auto-generated method stub
+		
+		Company company = new Company(); 
+		Set<Company> companies = new HashSet<Company>(); 
+		
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+		
+		try {
+			stmt = conn.createStatement(); 
+			// build The SQL query
+			String sql = "SELECT * FROM COMPANY"; 
+			// Set the results from the database
+			ResultSet resultSet = stmt.executeQuery(sql);
+			// constructor the object, retrieve the attributes from the results
+			while (resultSet.next()) {
+				
+				company.setId(resultSet.getLong(1));;
+				company.setCompName(resultSet.getString(2));
+				company.setPassword(resultSet.getString(3));
+				company.setEmail(resultSet.getString(4));
+
+				companies.add(company);
+			}	
+			
+		} catch (SQLException e) {
+			throw new Exception("Retriev all the coupons failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				// do nothing
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+
+		}
+		
 		return null;
 	}
-
 
 
 	@Override
 	public Set<Coupon> getCoupons() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+
+		Coupon coupon = new Coupon();
+		Set<Coupon> coupons = new HashSet<Coupon>();
+
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+
+		try {
+			stmt = conn.createStatement();
+			// build The SQL query
+			String sql = "SELECT * FROM COMPANY";
+			// Set the results from the database
+			ResultSet resultSet = stmt.executeQuery(sql);
+			// constructor the object, retrieve the attributes from the results
+			while (resultSet.next()) {
+
+				coupon.setId(resultSet.getLong(1));
+				coupon.setTitle(resultSet.getString(2));
+				coupon.setStartDate((Date) resultSet.getDate(3));
+				coupon.setEndDate((Date) resultSet.getDate(4));
+				coupon.setAmount(resultSet.getInt(5));
+				CouponType type = CouponType.valueOf(resultSet.getString(6)); // Convert String to Enum
+				coupon.setType(type);
+				coupon.setMessage(resultSet.getString(7));
+				coupon.setPrice(resultSet.getDouble(8));
+				coupon.setImage(resultSet.getString(9));
+
+				coupons.add(coupon);
+
+			}
+
+		} catch (SQLException e) {
+			throw new Exception("Retriev all the coupons failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				// do nothing
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+
+		}
+		return coupons;
 	}
 
+	
+	public void printAllCompmies() throws Exception{ 
+		
+		
+		Company company = new Company(); 
+		
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+		
+		try {
+			stmt = conn.createStatement(); 
+			// build The SQL query
+			String sql = "SELECT * FROM COMPANY"; 
+			// Set the results from the database
+			ResultSet resultSet = stmt.executeQuery(sql);
+			// constructor the object, retrieve the attributes from the results
+			while (resultSet.next()) {
+				
+				company.setId(resultSet.getLong(1));;
+				company.setCompName(resultSet.getString(2));
+				company.setPassword(resultSet.getString(3));
+				company.setEmail(resultSet.getString(4));
 
+				System.out.println(company);
+			}	
+			
+		} catch (SQLException e) {
+			throw new Exception("Retriev all the coupons failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				// do nothing
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 
+		}
+		
+		
+	}
 	@Override
 	public Boolean login(String compName, String password) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
-	public Company getCompany(long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
 

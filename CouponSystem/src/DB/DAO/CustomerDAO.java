@@ -10,19 +10,17 @@ public interface CustomerDAO {
 
 	void createCustomer(Customer customer) throws Exception; 
 	
-	void insertCustomer(Customer customer) throws Exception;
-
 	void removeCustomer(Customer customer) throws Exception;
 
 	void updateCustomer(Customer customer) throws Exception;
 
 	Customer getCustomer(long id) throws Exception;
 	
-	Set<Company> getAllCustomer() throws Exception;	
+	Set<Customer> getAllCustomer() throws Exception;	
 	
 	Set<Coupon> getCoupons() throws Exception; 
 	
-	Boolean login(String compName, String password) throws Exception; 
+	Boolean login(String custName, String password) throws Exception; 
 	
 	
 	
