@@ -1,5 +1,6 @@
 package DB.DBDAO;
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -25,52 +26,12 @@ public class CouponDBDAO implements CouponDAO {
 	// Attributes
 
 	Connection conn;
+	private Coupon coupon;
+	private long id;
 
 	// Methods that DBDAO Must use from DAO
 
 	// **This method remove an company by ID key **//
-	@Override
-	public void createCoupon(Coupon coupon) throws Exception {
-		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
-		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE)  VALUES(?,?,?,?,?,?,?,?)";
-		PreparedStatement pstmt = null;
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, coupon.getTitle());
-			pstmt.setDate(2, (Date) coupon.getStartDate());
-			pstmt.setDate(3, (Date) coupon.getEndDate());
-			pstmt.setInt(4, coupon.getAmount());
-			pstmt.setString(5, coupon.getType().name()); // **.name() casting the ENUM to String
-			pstmt.setString(6, coupon.getMessage());
-			pstmt.setDouble(7, coupon.getPrice());
-			pstmt.setString(8, coupon.getImage());
-			// Execute the query and update
-			pstmt.executeUpdate();
-
-		} catch (SQLException e) {
-			// Handle errors for JDBC
-			throw new Exception("Coupon creation failed");
-		} finally {
-			// finally block used to close resources
-			try {
-				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new Exception("The close connection action faild");
-			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new Exception("The close connection action faild");
-			}
-
-		}
-		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
-
-	}
 
 	@Override
 	// **This method remove an company by ID key **//
@@ -234,7 +195,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
 
-				coupons.add(coupon);
+      			coupons.add(coupon);
 
 			}
 
@@ -373,6 +334,116 @@ public class CouponDBDAO implements CouponDAO {
 		}
 
 		return coupons;
+	}
+	
+	public void createCoupon(Coupon coupon, long comp_id) throws Exception {
+		
+		this.id = comp_id;
+		long id_inc = 0; 
+		// TODO Auto-generated method stub
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		
+		// Define the Execute query
+		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE)  VALUES(?,?,?,?,?,?,?,?)";
+	    String sql2 = " INSERT INTO COMPANY_COUPON (COMP_ID,COUPON_ID) VALUES(?,?)"; 
+		String sql3 = "SELECT * FROM COUPON";
+		// Set the results from the database
+		PreparedStatement pstmt = null;
+		PreparedStatement pstmt2 = null; 
+		java.sql.Statement stmt= null; 
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, coupon.getTitle());
+			pstmt.setDate(2, (Date) coupon.getStartDate());
+			pstmt.setDate(3, (Date) coupon.getEndDate());
+			pstmt.setInt(4, coupon.getAmount());
+			pstmt.setString(5, coupon.getType().name()); // **.name() casting the ENUM to String
+			pstmt.setString(6, coupon.getMessage());
+			pstmt.setDouble(7, coupon.getPrice());
+			pstmt.setString(8, coupon.getImage());
+			// Execute the query and update
+			pstmt.executeUpdate();
+			 //Insert the new coupon to join table COMPANY_COUPON 
+			stmt = conn.createStatement();  
+			ResultSet resultSet = stmt.executeQuery(sql3); 
+			while (resultSet.next()) {
+				id_inc = resultSet.getLong(1); 	
+			}
+			// constructor the object, retrieve the attributes from the results
+			pstmt2 = conn.prepareStatement(sql2); 
+			pstmt2.setLong(1,comp_id );
+            pstmt2.setLong(2,id_inc);
+            pstmt2.executeUpdate(); 
+            
+		} catch (SQLException e) {
+			// Handle errors for JDBC
+			throw new Exception("Coupon creation failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (pstmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+
+		}
+		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
+
+		
+	}
+
+	@Override
+	public void createCoupon(Coupon coupon) throws Exception {
+		// TODO Auto-generated method stub
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE)  VALUES(?,?,?,?,?,?,?,?)";
+		PreparedStatement pstmt = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, coupon.getTitle());
+			pstmt.setDate(2, (Date) coupon.getStartDate());
+			pstmt.setDate(3, (Date) coupon.getEndDate());
+			pstmt.setInt(4, coupon.getAmount());
+			pstmt.setString(5, coupon.getType().name()); // **.name() casting the ENUM to String
+			pstmt.setString(6, coupon.getMessage());
+			pstmt.setDouble(7, coupon.getPrice());
+			pstmt.setString(8, coupon.getImage());
+			// Execute the query and update
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// Handle errors for JDBC
+			throw new Exception("Coupon creation failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (pstmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+
+		}
+		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
+
+	
+		
 	}
 
 }

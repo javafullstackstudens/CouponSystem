@@ -16,6 +16,7 @@ import DB.Database;
 import DB.DBDAO.CompanyDBDAO;
 import DB.DBDAO.CouponDBDAO;
 import DB.DBDAO.CustomerDBDAO;
+import Facade.AdminFacade;
 import Facade.CompanyFacade;
 import Facade.CustomerFacade;
 import JavaBeans.Company;
@@ -27,74 +28,63 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-		
-		/**************Coupon HashSet Collection TEST****************/
-		Set<Coupon> coupons = new HashSet<Coupon>();
-		Class.forName("org.apache.derby.jdbc.ClientDriver");
 
-		CouponDBDAO couponDBDAO = new CouponDBDAO(); 
-
-		coupons =couponDBDAO.getAllCoupouns();  
+		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
+		Coupon coupon = new Coupon(4, "Evi The King", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
+		Customer customer = new Customer(3, "Oriel", "1234");
+		Customer customer2 = new Customer(5,"Evi", "221284");
 		
-		Iterator<Coupon> iterator = coupons.iterator(); 
+        AdminFacade adminFacade = new AdminFacade(); 
+//        adminFacade.createCompany(company);
+//        adminFacade.createCustomer(customer);
+	/****************************Test-CreateCoupon*********************************/
+//		CompanyFacade companyFacade = new CompanyFacade(); 
+//		companyFacade.login(company.getCompName(), company.getPassword(), "Gold");
+//        companyFacade.createCoupon(coupon);
+    
+    /****************************Test-PurchasedCoupon*****************************/
 		
-		while(iterator.hasNext()) { 
-			
-			System.out.println(iterator.next());
-		}
-		
-		/**************Customer HashSet Collection TEST****************/
-		Set<Customer> customers = new HashSet<Customer>(); 
-		CustomerDBDAO customerDBDAO = new CustomerDBDAO(); 
-		
-		customers = customerDBDAO.getAllCustomer(); 
-		
-		Iterator<Customer> iterator2 = customers.iterator(); 
-		
-		while (iterator2.hasNext()) {
-			
-			System.out.println(iterator2.next());
-			
-		}
-		
-			
+        adminFacade.createCustomer(customer2);
+        CustomerFacade customerFacade = new CustomerFacade(); 
+        customerFacade.login(customer2.getCustomerName(),customer2.getPassword(), "Gold"); 
+        customerFacade.purchaseCoupon(coupon);
+        
 		
 		
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		Database.getDatabase(); 
-//		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
-//		Coupon coupon = new Coupon(4, "Evi The King", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
-//		Customer customer = new Customer(3, "Oriel", "1234");
-//		Customer customer2 = new Customer(5,"Evi", "221284");
-//	
-//		CustomerDBDAO customerDBDAO = new CustomerDBDAO(); 
-////		
-//		System.out.println(customerDBDAO.getCustomer(5)); 
-//		
-//		CompanyDBDAO companyDBDAO = new CompanyDBDAO(); 
+//		/**************Coupon HashSet Collection TEST****************/
+//		Set<Coupon> coupons = new HashSet<Coupon>();
+//		Class.forName("org.apache.derby.jdbc.ClientDriver");
 //
+//		CouponDBDAO couponDBDAO = new CouponDBDAO(); 
+//
+//		coupons =couponDBDAO.getAllCoupouns();  
+//		Iterator iterator = coupons.iterator(); 
 //		
-//		companyDBDAO.updateCompany(company);
-//		couponDBDAO.printAllCoupons();
-		
-		
+//		while(iterator.hasNext()) {
+//			System.out.println(iterator.next());
+//		}
+	
 
 
-
 		
+//		/**************Customer HashSet Collection TEST****************/
+//		Set<Customer> customers = new HashSet<Customer>(); 
+//		CustomerDBDAO customerDBDAO = new CustomerDBDAO(); 
+//		
+//		customers = customerDBDAO.getAllCustomer(); 
+//		
+//		Iterator iterator2 = customers.iterator(); 
+//		
+//		while (iterator2.hasNext()) {
+//			
+//			System.out.println(iterator2.next());
+//			
+//		}
+//		
+
 		}
 
 		

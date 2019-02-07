@@ -1,5 +1,6 @@
 package DB.DBDAO;
 
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -18,6 +19,7 @@ import JavaBeans.CouponType;
 
 public class CompanyDBDAO implements CompanyDAO {
 
+	Company company = new Company(); 
 	
 	// Attributes
 	
@@ -189,7 +191,6 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public Set<Company> getAllCompanies() throws Exception {
 		
-		Company company = new Company(); 
 		Set<Company> companies = new HashSet<Company>(); 
 		
 		// Open a connection
@@ -205,7 +206,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			ResultSet resultSet = stmt.executeQuery(sql);
 			// constructor the object, retrieve the attributes from the results
 			while (resultSet.next()) {
-				
+				Company company = new Company(); 
 				company.setId(resultSet.getLong(1));;
 				company.setCompName(resultSet.getString(2));
 				company.setPassword(resultSet.getString(3));

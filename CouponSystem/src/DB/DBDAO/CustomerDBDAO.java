@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.sun.org.apache.bcel.internal.generic.I2D;
+import com.sun.webkit.ThemeClient;
 import com.sun.xml.internal.bind.v2.TODO;
 
 import DB.DAO.CustomerDAO;
@@ -185,7 +186,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	@Override
 	public Set<Coupon> getCoupons() throws Exception {
-		Coupon coupon = new Coupon();
+		
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
 		// Open a connection
@@ -201,7 +202,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			ResultSet resultSet = stmt.executeQuery(sql);
 			// constructor the object, retrieve the attributes from the results
 			while (resultSet.next()) {
-
+				Coupon coupon = new Coupon();
 				coupon.setId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
 				coupon.setStartDate((Date) resultSet.getDate(3));
@@ -247,7 +248,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public Set<Customer> getAllCustomer() throws Exception {
 		// TODO Auto-generated method stub
-		Customer customer = new  Customer(); 
+		
 		Set<Customer> customers = new HashSet<Customer>(); 
 		
 		// Open a connection
@@ -263,7 +264,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			ResultSet resultSet = stmt.executeQuery(sql);
 			// constructor the object, retrieve the attributes from the results
 			while (resultSet.next()) {
-				
+				Customer customer = new  Customer(); 
 				customer.setId(resultSet.getLong(1));
 				customer.setCustomerName(resultSet.getString(2));
 				customer.setPassword(resultSet.getString(3));
@@ -294,6 +295,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 	
 	public void printAllCustmers() throws Exception { 
+
 		// TODO Auto-generated method stub
 		Customer customer = new  Customer(); 
 				
@@ -338,6 +340,106 @@ public class CustomerDBDAO implements CustomerDAO {
 		}
 		
 	}
+//	public Customer getCustomer(String name) throws Exception {
+//
+//		
+//		Customer customer = new Customer(); 
+//		// Open a connection
+//		conn = DriverManager.getConnection(Utils.getDBUrl());
+//
+//		// Define the Execute query
+//		java.sql.Statement stmt = null;
+//		
+//		try {
+//			stmt =conn.createStatement(); 
+//			//build The SQL query
+//			String sql = "SELECT * FROM CUSTOMER WHERE CUST_NAME=" + name;
+//			//Set the results from the database 
+//			ResultSet resultSet = stmt.executeQuery(sql); 
+//			//constructor the object, retrieve the attributes from the results 
+//			resultSet.next(); 
+//			customer.setId(resultSet.getLong(1));
+//			customer.setCustomerName(resultSet.getString(2)); 
+//			customer.setPassword(resultSet.getString(3));
+//			//TODO - Add the coupons list from the ArrayCollection 
+//		} catch (SQLException e) {
+//			throw new Exception("update customer failed");
+//		} finally {
+//			// finally block used to close resources
+//			try {
+//				if (stmt != null)
+//					conn.close();
+//			} catch (SQLException se) {
+//				throw new Exception("The close connection action faild"); 
+//			}
+//			try {
+//				if (conn != null)
+//					conn.close();
+//			} catch (SQLException se) {
+//				throw new Exception("The close connection action faild"); 
+//			}
+//
+//		}
+//		return customer ;
+//	}
+	
+	public void purchaseCoupon(Coupon coupon, Customer customer ) throws Exception {
+		
+		long id_inc = 0; 
+		// TODO Auto-generated method stub
+		// Open a connection
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+		// Define the Execute query
+		System.out.println(coupon);
+		System.out.println(customer);
+		String sql1 = "SELECT * FROM COUPON";
+		String sql2 = " INSERT INTO CUSTOMER_COUPON(CUST_ID,COUPON_ID) VALUES(?,?)"; 
+		// Set the results from the database
+		PreparedStatement pstmt = null;
+		java.sql.Statement stmt= null;
+		try {
 
+			 //Insert the new coupon to join table COMPANY_COUPON 
+			stmt = conn.createStatement();  
+			ResultSet resultSet = stmt.executeQuery(sql1); 
+			while (resultSet.next()) {
+				if(coupon.getTitle().equals(resultSet.getString(2)))
+				{
+					id_inc = resultSet.getLong(1); 
+				}		
+			}
+			
+			System.out.println(id_inc + " " + customer.getId());
+			
+			// constructor the object, retrieve the attributes from the results
+			pstmt = conn.prepareStatement(sql2); 
+			pstmt.setLong(1,customer.getId());
+            pstmt.setLong(2,id_inc);
+            pstmt.executeUpdate(); 
+            
+		} catch (SQLException e) {
+			// Handle errors for JDBC
+//			throw new Exception("Purchased Coupon failed");
+			System.out.println(e.getMessage());
+		} finally {
+			// finally block used to close resources
+			try {
+				if (pstmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild");
+			}
+
+		}
+		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
+
+		
+	}
 
 }

@@ -8,7 +8,7 @@ import JavaBeans.Coupon;
 public interface CouponDAO {
 
 
-	void createCoupon(Coupon coupon) throws Exception;
+	void createCoupon(Coupon coupon) throws Exception ;
 	
 	void removeCoupon(Coupon coupon) throws Exception;
 
@@ -19,6 +19,8 @@ public interface CouponDAO {
 	Set<Coupon> getAllCoupouns() throws Exception;
 	
 	Set<Coupon> getCouponByType(Coupon coupon) throws Exception; 
+	
+	public void createCoupon(Coupon coupon, long id) throws Exception;
 	
 	
 	
