@@ -23,16 +23,31 @@ import sun.net.ftp.FtpDirEntry.Type;
 
 public class CouponDBDAO implements CouponDAO {
 
-	// Attributes
+	/**
+	 * This class implements basic methods between the application level to the DB such as C.R.U.D.
+	 * the logic of the program doesn't implement in this level. 
+	 * this level is the only connection to the SQL database,this level uses a connection pool as a data access pattern 
+	 * createCoupon
+	 * removeCoupon 
+	 * updateCoupon
+	 * getCoupon
+	 * getAllCoupouns
+	 * getCouponByType
+	 * createCoupon
+	 * login 
+	 */
+		
+	/*****************************************Attributes*********************************************/ 
 
-	Connection conn;
+	private Connection conn;
 	private Coupon coupon;
 	private long id;
+	/********************************************CTOR************************************************/ 
+    public CouponDBDAO() {
+		// TODO Auto-generated constructor stub
+	}
 
-	// Methods that DBDAO Must use from DAO
-
-	// **This method remove an company by ID key **//
-
+    /********************************************Methods*********************************************/ 
 	@Override
 	// **This method remove an company by ID key **//
 	public void removeCoupon(Coupon coupon) throws Exception {
@@ -340,7 +355,6 @@ public class CouponDBDAO implements CouponDAO {
 		
 		this.id = comp_id;
 		long id_inc = 0; 
-		// TODO Auto-generated method stub
 		// Open a connection
 		conn = DriverManager.getConnection(Utils.getDBUrl());
 		

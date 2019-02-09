@@ -25,12 +25,32 @@ import sun.security.action.GetBooleanAction;
 
 public class CustomerDBDAO implements CustomerDAO {
 
-	// Attributes
+	/**
+	 * This class implements basic methods between the application level to the DB such as C.R.U.D.
+	 * the logic of the program doesn't implement in this level. 
+	 * this level is the only connection to the SQL database,this level uses a connection pool as a data access pattern 
+	 * createCustomer
+	 * removeCustomer 
+	 * updateCustomer
+	 * getCustomer
+	 * getAllCustomer
+	 * getCouponByType
+	 * getCoupons
+	 * @throws Exception
+	 * login 
+	 */
+	
+	/*****************************************Attributes********************************************/ 
 
 	Connection conn;
 
-	// Methods that DBDAO Must use from DAO
+	/********************************************CTOR***********************************************/ 
 	
+	public CustomerDBDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	/*******************************************Methods*********************************************/ 
 	@Override
 	public void createCustomer(Customer customer) throws Exception {
 		// TODO Auto-generated method stub
@@ -142,7 +162,6 @@ public class CustomerDBDAO implements CustomerDAO {
 		System.out.println(customer.getCustomerName() + " successfully Updated from the DB");
 	}
 
-	@Override
 	public Customer getCustomer(long id) throws Exception {
 		
 		Customer customer = new Customer(); 
@@ -186,7 +205,6 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	@Override
 	public Set<Coupon> getCoupons() throws Exception {
-		
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
 		// Open a connection
@@ -237,6 +255,9 @@ public class CustomerDBDAO implements CustomerDAO {
 
 		}
 		return coupons;
+		
+		
+		
 	}
 
 	@Override
@@ -340,53 +361,58 @@ public class CustomerDBDAO implements CustomerDAO {
 		}
 		
 	}
-//	public Customer getCustomer(String name) throws Exception {
-//
-//		
-//		Customer customer = new Customer(); 
-//		// Open a connection
-//		conn = DriverManager.getConnection(Utils.getDBUrl());
-//
-//		// Define the Execute query
-//		java.sql.Statement stmt = null;
-//		
-//		try {
-//			stmt =conn.createStatement(); 
-//			//build The SQL query
-//			String sql = "SELECT * FROM CUSTOMER WHERE CUST_NAME=" + name;
-//			//Set the results from the database 
-//			ResultSet resultSet = stmt.executeQuery(sql); 
-//			//constructor the object, retrieve the attributes from the results 
-//			resultSet.next(); 
-//			customer.setId(resultSet.getLong(1));
-//			customer.setCustomerName(resultSet.getString(2)); 
-//			customer.setPassword(resultSet.getString(3));
-//			//TODO - Add the coupons list from the ArrayCollection 
-//		} catch (SQLException e) {
-//			throw new Exception("update customer failed");
-//		} finally {
-//			// finally block used to close resources
-//			try {
-//				if (stmt != null)
-//					conn.close();
-//			} catch (SQLException se) {
-//				throw new Exception("The close connection action faild"); 
-//			}
-//			try {
-//				if (conn != null)
-//					conn.close();
-//			} catch (SQLException se) {
-//				throw new Exception("The close connection action faild"); 
-//			}
-//
-//		}
-//		return customer ;
-//	}
+	public Customer getCustomer(String CUST_NAME) throws Exception 
+	{ 
+
+		Customer customer = new Customer(); 
+		conn = DriverManager.getConnection(Utils.getDBUrl());
+
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+		
+		try {
+			
+			stmt =conn.createStatement(); 
+			String sql = "SELECT * FROM CUSTOMER";
+			// Set the results from the database
+			ResultSet resultSet = stmt.executeQuery(sql);
+
+			while( resultSet.next()) { 
+				if(resultSet.getString(2).equals(CUST_NAME))
+				{
+					customer.setId(resultSet.getLong(1));
+					customer.setCustomerName(resultSet.getString(2));
+					customer.setPassword(resultSet.getString(3));
+					break; 
+				}
+
+			}
+
+		} catch (SQLException e) {
+			  System.out.println(e.getMessage());
+			throw new Exception("get customer failed");
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new Exception("The close connection action faild"); 
+			}
+
+		}
+	return customer; 
+	}
 	
 	public void purchaseCoupon(Coupon coupon, Customer customer ) throws Exception {
 		
 		long id_inc = 0; 
-		// TODO Auto-generated method stub
 		// Open a connection
 		conn = DriverManager.getConnection(Utils.getDBUrl());
 		// Define the Execute query
@@ -409,8 +435,6 @@ public class CustomerDBDAO implements CustomerDAO {
 				}		
 			}
 			
-			System.out.println(id_inc + " " + customer.getId());
-			
 			// constructor the object, retrieve the attributes from the results
 			pstmt = conn.prepareStatement(sql2); 
 			pstmt.setLong(1,customer.getId());
@@ -419,8 +443,7 @@ public class CustomerDBDAO implements CustomerDAO {
             
 		} catch (SQLException e) {
 			// Handle errors for JDBC
-//			throw new Exception("Purchased Coupon failed");
-			System.out.println(e.getMessage());
+			throw new Exception("Purchased Coupon failed");
 		} finally {
 			// finally block used to close resources
 			try {

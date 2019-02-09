@@ -15,75 +15,51 @@ import JavaBeans.Customer;
 import Main.Utils;
 
 public class CustomerFacade implements CouponClientFacade {
+	
+	
+	/**
+	 * This class implements the client level of the system. 
+	 * The user login to the system and the instance will be according to the type of the client. 
+	 * This level should uses the DAO level( CompanyDBDAO, CustomerDBDAO ) 
+	 * In this level we will implement the logic of the program. 
+	 * It Contains : 
+	 * Login
+	 * purchaseCoupon
+	 * getAllPurchasedCoupons
+	 * getAllPurchasedCouponsByType
+	 * getAllPurchasedCouponsByPrice
+	 * getAllCoupons
+	 */
 
-	Customer customer = new Customer(); 
-	String CUST_NAME = null; 
-	String PASS = null; 
-	Connection conn; 
-	CustomerDBDAO  customerDBDAO = new CustomerDBDAO(); 
+/**************************************Attributes*****************************************/ 	
+    private Customer customer = new Customer(); 
+    private String CUST_NAME = null; 
+    private String PASS = null;
+    private String clientType = null; 
+    private Connection conn; 
+    private CustomerDBDAO  customerDBDAO = new CustomerDBDAO();
 	
+	/*************************************CTOR***********************************************/
+	public CustomerFacade() throws Exception 
+	{
+	//TODO//
 	
+	}
+	
+	/*************************************Methods********************************************/	
 	@Override
 	public CouponClientFacade login(String name, String password, String clientType) {
-		// TODO Auto-generated method stub
 		this.CUST_NAME = name; 
-		this.PASS = password;
-		return null; 
-	}
-
-	
-	public CustomerFacade() 
-	{
-	//TODO//	
-	}
-	
-	public void getCustomer() throws Exception 
-	{ 
-
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-
-		// Define the Execute query
-		java.sql.Statement stmt = null;
+		this.PASS = password; 
+		this.clientType = clientType; 
 		
-		try {
-			stmt =conn.createStatement(); 
-			String sql = "SELECT * FROM CUSTOMER"; 
-			ResultSet resultSet = stmt.executeQuery(sql); 
-			while( resultSet.next()) { 
-				if(resultSet.getString(2).equals(CUST_NAME))
-				{
-					customer.setId(resultSet.getLong(1));
-					customer.setCustomerName(resultSet.getString(2));
-					customer.setPassword(resultSet.getString(3));
-				}
-				
-				
-			}
+		return null;
 
-		} catch (SQLException e) {
-			throw new Exception("get customer failed");
-		} finally {
-			// finally block used to close resources
-			try {
-				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
-			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
-			}
-
-		}
-	
 	}
-	
+
 	public void purchaseCoupon(Coupon coupon) throws Exception{
 		
-		getCustomer();
+		customer = customerDBDAO.getCustomer(CUST_NAME); 
 		customerDBDAO.purchaseCoupon(coupon, customer);
 	} 
 	

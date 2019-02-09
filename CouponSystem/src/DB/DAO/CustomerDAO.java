@@ -7,6 +7,20 @@ import JavaBeans.Coupon;
 import JavaBeans.Customer;
 
 public interface CustomerDAO {
+	
+	/**
+	 * This interface defines all the methods are should implement in the CustomerDBDAO. 
+	 * It Contains : 
+	 * createCustomer
+	 * removeCustomer 
+	 * updateCustomer
+	 * getCustomer
+	 * getAllCustomer
+	 * getCouponByType
+	 * getCoupons
+	 * @throws Exception
+	 * login 
+	 */
 
 	void createCustomer(Customer customer) throws Exception; 
 	
@@ -14,7 +28,7 @@ public interface CustomerDAO {
 
 	void updateCustomer(Customer customer) throws Exception;
 
-	Customer getCustomer(long id) throws Exception;
+	Customer getCustomer(String CUST_NAME) throws Exception;
 	
 	Set<Customer> getAllCustomer() throws Exception;	
 	

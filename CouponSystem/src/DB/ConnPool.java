@@ -9,6 +9,14 @@ import jdk.internal.dynalink.beans.StaticClass;
 
 public class ConnPool {
 	
+	/**
+	 * The Connection pooling is a well-known data access pattern,whose main purpose is to reduce the overhead involved in performing 
+	 * database connections and read/write database operations. 
+	 * a connection pool is, at the most basic level, a database connection cache implementation
+	 * It Contains: 
+	 *  
+	 */
+	
 	static Connection conn;
 	
 	private static ConnPool instance = new ConnPool();

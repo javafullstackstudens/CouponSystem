@@ -19,19 +19,34 @@ import JavaBeans.CouponType;
 
 public class CompanyDBDAO implements CompanyDAO {
 
-	Company company = new Company(); 
+	/**
+	 * This class implement basic methods between the application level to the DB such as C.R.U.D.
+	 * the logic of the program dosen't implement in this level. 
+	 * this level is the only connection to the SQL database,this level  uses a connection pool as a data access pattern 
+	 * It Contains : 
+	 * createCompany
+	 * removeComapny 
+	 * updateComapny 
+	 * getCompany
+	 * getAllCompanies
+	 * getCoupons
+	 * printAllCompmies
+	 * getCompany 
+	 */
 	
-	// Attributes
-	
+	/**************************************Attributes*******************************************/ 
 	static Connection conn;
+	private ConnPool Pool = ConnPool.getInstance(); 
+	/******************************************CTOR*********************************************/ 
 	
-	ConnPool Pool = ConnPool.getInstance(); 
+	public CompanyDBDAO() {
+		// TODO Auto-generated constructor stub
+	}
 	
-	// Methods that DBDAO Must use from DAO
-	
+	/*****************************************Methods*******************************************/ 
 		@Override
 		
-	public void createCompany(Company company) throws Exception {
+ 	public void createCompany(Company company) throws Exception {
 		 //Open a connection
 		conn = DriverManager.getConnection(Utils.getDBUrl());
 		//Define the Execute query
@@ -237,7 +252,6 @@ public class CompanyDBDAO implements CompanyDAO {
 		return null;
 	}
 
-
 	@Override
 	public Set<Coupon> getCoupons() throws Exception {
 
@@ -294,7 +308,6 @@ public class CompanyDBDAO implements CompanyDAO {
 		return coupons;
 	}
 
-	
 	public void printAllCompmies() throws Exception{ 
 		
 		
@@ -349,6 +362,53 @@ public class CompanyDBDAO implements CompanyDAO {
 		return null;
 	}
 
+	/***************************Return company object by company name *********************/ 
+	public Company  getCompany (String comp_name) throws Exception { 
+		// Open a connection
+				Company company = new Company(); 
+		        conn = DriverManager.getConnection(Utils.getDBUrl()); 
+				// Define the Execute query
+				java.sql.Statement stmt = null;
+
+				try {
+					stmt = conn.createStatement();
+					// build The SQL query
+					String sql = "SELECT * FROM COMPANY";
+					// Set the results from the database
+					ResultSet resultSet = stmt.executeQuery(sql);
+					// constructor the object, retrieve the attributes from the results
+					while(resultSet.next()) { 
+						if(resultSet.getString(2).equals(comp_name)) { 
+						
+							company.setId(resultSet.getLong(1)); 
+							company.setCompName(resultSet.getString(2));
+							company.setPassword(resultSet.getString(3));
+							company.setEmail(resultSet.getString(4));
+						}
+						
+					}
+				} catch (SQLException e) {
+					//Handle errors for JDBC
+					throw new Exception("get Company from Database failed");
+				} finally {
+					// finally block used to close resources
+					try {
+						if (stmt != null)
+							conn.close();
+					} catch (SQLException se) {
+						throw new Exception("The close connection action faild"); 
+					}
+					try {
+						if (conn != null)
+							conn.close();
+					} catch (SQLException se) {
+						throw new Exception("The close connection action faild"); 
+					}
+
+				}
+				return company; 
+				
+	}
 
 
 	

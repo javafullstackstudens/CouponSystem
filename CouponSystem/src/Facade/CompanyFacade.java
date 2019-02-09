@@ -16,59 +16,36 @@ import Main.Utils;
 
 public class CompanyFacade implements CouponClientFacade {
 	
-	Company c = new Company(); 
-    Connection conn; 
-    long ID_comp ; 
-    String COMP_NAME = null; 
-    String pass = null; 
-    
-	CouponDBDAO couponDBDAO = new CouponDBDAO(); 
-    
 	
-	public void  getCompany () throws Exception { 
-		// Open a connection
-				conn = DriverManager.getConnection(Utils.getDBUrl()); 
-				// Define the Execute query
-				java.sql.Statement stmt = null;
+	/**
+	 * This class implements the client level of the system. 
+	 * The user login to the system and the instance will be according to the type of the client. 
+	 * This level should uses the DAO level ( couponDBDAO, CompanyDBDAO ) 
+	 * In this level we will implement the logic of the program. 
+	 * It Contains : 
+	 * Login
+	 * createCoupon
+	 * removeCoupon
+	 * updateCoupon
+	 * getCoupon
+	 * getAllCoupons
+	 */
 
-				try {
-					stmt = conn.createStatement();
-					// build The SQL query
-					String sql = "SELECT * FROM COMPANY";
-					// Set the results from the database
-					ResultSet resultSet = stmt.executeQuery(sql);
-					// constructor the object, retrieve the attributes from the results
-					while(resultSet.next()) { 
-						if(resultSet.getString(2).equals(COMP_NAME)) { 
-						
-							c.setId(resultSet.getLong(1)); 
-							c.setCompName(resultSet.getString(2));
-							c.setPassword(resultSet.getString(3));
-							c.setEmail(resultSet.getString(4));
-						}
-						
-					}
-				} catch (SQLException e) {
-					//Handle errors for JDBC
-					throw new Exception("get Company from Database failed");
-				} finally {
-					// finally block used to close resources
-					try {
-						if (stmt != null)
-							conn.close();
-					} catch (SQLException se) {
-						throw new Exception("The close connection action faild"); 
-					}
-					try {
-						if (conn != null)
-							conn.close();
-					} catch (SQLException se) {
-						throw new Exception("The close connection action faild"); 
-					}
-
-				}
-				
+	/**************************************Attributes*****************************************/ 
+	private Company c = new Company(); 
+	private Connection conn; 
+	private long ID_comp ; 
+	private String COMP_NAME = null; 
+	private String pass = null;     
+	private CouponDBDAO couponDBDAO = new CouponDBDAO(); 
+	private CompanyDBDAO CompanyDBDAO = new CompanyDBDAO(); 
+   
+	/***************************************CTRO*********************************************/
+	public CompanyFacade() {
+		// TODO Auto-generated constructor stub
 	}
+	
+	/**************************************Methods*******************************************/
 	@Override
 	public CouponClientFacade login(String name, String password, String clientType) {
 		// TODO Auto-generated method stub
@@ -77,12 +54,9 @@ public class CompanyFacade implements CouponClientFacade {
 		return null;
 	}
 	
-	/*****************Coupon Methods 
-	 * @throws Exception ********************/
 	public void createCoupon(Coupon coupon) throws Exception { 
 		
-		getCompany();
-		System.out.println(c);
+		c = CompanyDBDAO.getCompany(COMP_NAME); 
 		couponDBDAO.createCoupon(coupon, c.getId());
 				
 	}
@@ -95,7 +69,7 @@ public class CompanyFacade implements CouponClientFacade {
 		
 	}
 
-	public Coupon getCopon(long id ) {
+	public Coupon getCoupon(long id ) {
 		return null; 
 		
 	}

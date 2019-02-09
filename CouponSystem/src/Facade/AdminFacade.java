@@ -8,15 +8,29 @@ import JavaBeans.Company;
 import JavaBeans.Customer;
 
 public class AdminFacade implements CouponClientFacade {
-
+	
+	/**
+	 * This class implements the client level of the system. 
+	 * The user login to the system and the instance will be according to the type of the client. 
+	 * This level should uses the DAO level( CompanyDBDAO, CustomerDBDAO ) 
+	 * In this level we will implement the logic of the program. 
+	 * It Contains : 
+	 * Login
+	 * createCompany
+	 * removeCompany
+	 * updateCoupon
+	 * getCoupon
+	 * getAllCoupons
+	 */
+	/**************************************Attributes*****************************************/ 
 	private CompanyDBDAO compDAO = new CompanyDBDAO();
 	private CustomerDBDAO custDAO = new CustomerDBDAO(); 
 	private Company company;
-
+	/****************************************CTRO*********************************************/ 
 	public AdminFacade() {
 		// TODO Auto-generated constructor stub
 	}
-
+	/***************************************Methods*******************************************/ 
 	@Override
 	public CouponClientFacade login(String name, String password, String clientType) {
 		// TODO Auto-generated method stub

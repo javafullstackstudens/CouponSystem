@@ -28,26 +28,29 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-
+        Database.getDatabase(); 
 		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
 		Coupon coupon = new Coupon(4, "Evi The King", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
 		Customer customer = new Customer(3, "Oriel", "1234");
 		Customer customer2 = new Customer(5,"Evi", "221284");
+		Coupon coupon1 = new Coupon(3, "Noam&Omer", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
 		
+	/************************************Admin-Facade-Test************************/	
         AdminFacade adminFacade = new AdminFacade(); 
-//        adminFacade.createCompany(company);
-//        adminFacade.createCustomer(customer);
+        adminFacade.createCompany(company);
+        adminFacade.createCustomer(customer);
+        adminFacade.createCustomer(customer2);
 	/****************************Test-CreateCoupon*********************************/
-//		CompanyFacade companyFacade = new CompanyFacade(); 
-//		companyFacade.login(company.getCompName(), company.getPassword(), "Gold");
-//        companyFacade.createCoupon(coupon);
+		CompanyFacade companyFacade = new CompanyFacade(); 
+		companyFacade.login(company.getCompName(), company.getPassword(), "Gold");
+        companyFacade.createCoupon(coupon1);
+        companyFacade.createCoupon(coupon);
     
     /****************************Test-PurchasedCoupon*****************************/
-		
-        adminFacade.createCustomer(customer2);
+
         CustomerFacade customerFacade = new CustomerFacade(); 
-        customerFacade.login(customer2.getCustomerName(),customer2.getPassword(), "Gold"); 
-        customerFacade.purchaseCoupon(coupon);
+        customerFacade.login(customer.getCustomerName(),customer.getPassword(), "Gold"); 
+        customerFacade.purchaseCoupon(coupon1);
         
 		
 		

@@ -4,6 +4,19 @@ import java.util.Set;
 import JavaBeans.*;
 
 public interface CompanyDAO {
+	
+	/**
+	 * This interface defines all the methods are should implement in the CustomerDBDAO. 
+	 * It Contains : 
+	 * createCompany
+	 * removeComapny 
+	 * updateComapny 
+	 * getCompany by name and by ID
+	 * getAllCompanies
+	 * getCoupons
+	 * login 
+	 * @throws Exception
+	 */
       
 		void createCompany(Company company ) throws Exception; 
 
