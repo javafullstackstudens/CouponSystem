@@ -6,6 +6,7 @@ import DB.DBDAO.CompanyDBDAO;
 import DB.DBDAO.CustomerDBDAO;
 import JavaBeans.Company;
 import JavaBeans.Customer;
+import Main.CouponSystem.clientType;
 
 public class AdminFacade implements CouponClientFacade {
 	
@@ -26,14 +27,20 @@ public class AdminFacade implements CouponClientFacade {
 	private CompanyDBDAO compDAO = new CompanyDBDAO();
 	private CustomerDBDAO custDAO = new CustomerDBDAO(); 
 	private Company company;
+	private String name =null ; 
+	private String pass = null;  
+	
 	/****************************************CTRO*********************************************/ 
 	public AdminFacade() {
 		// TODO Auto-generated constructor stub
 	}
 	/***************************************Methods*******************************************/ 
 	@Override
-	public CouponClientFacade login(String name, String password, String clientType) {
+	public CouponClientFacade login(String name, String password, clientType cType ) {
 		// TODO Auto-generated method stub
+		this.name = name; 
+		this.pass = password; 
+		
 		return null;
 	}
 	

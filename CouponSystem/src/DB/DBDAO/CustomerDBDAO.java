@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.omg.CORBA.PRIVATE_MEMBER;
+
 import com.sun.org.apache.bcel.internal.generic.I2D;
 import com.sun.webkit.ThemeClient;
 import com.sun.xml.internal.bind.v2.TODO;
 
+import DB.DBException;
 import DB.DAO.CustomerDAO;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
@@ -50,12 +53,18 @@ public class CustomerDBDAO implements CustomerDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	/*******************************************Methods*********************************************/ 
+	/*******************************************Methods
+	 * @throws SQLException *********************************************/ 
 	@Override
-	public void createCustomer(Customer customer) throws Exception {
+	public void createCustomer(Customer customer) throws DBException{
 		// TODO Auto-generated method stub
 		// Open a connection
-				conn = DriverManager.getConnection(Utils.getDBUrl());
+				try {
+					conn = DriverManager.getConnection(Utils.getDBUrl());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					throw new DBException("The Connection is faild");
+				}
 				// Define the Execute query
 				String sql = "INSERT INTO CUSTOMER (CUST_NAME,PASSWORD) VALUES (?,?)";
 				PreparedStatement pstmt = null;
@@ -67,32 +76,37 @@ public class CustomerDBDAO implements CustomerDAO {
 
 				} catch (SQLException e) {
 					// Handle errors for JDBC
-					throw new Exception("Customer creation faild");
+					throw new DBException("Customer creation faild");
 				} finally {
 					// finally block used to close resources
 					try {
 						if (pstmt != null)
 							conn.close();
 					} catch (SQLException se) {
-						// do nothing
+						throw new DBException("The close connection action faild");
 					}
 					try {
 						if (conn != null)
 							conn.close();
 					} catch (SQLException se) {
-						se.printStackTrace();
+						throw new DBException("The close connection action faild");
 					}
 
 				}
+				
 				System.out.println("Customer " + customer.getCustomerName() + " inserted successfully");
 		
 	}
 	
 	@Override
-	public void removeCustomer(Customer customer) throws Exception {
+	public void removeCustomer(Customer customer) throws DBException {
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		String sql = "DELETE FROM CUSTOMER WHERE id=?";
 		PreparedStatement pstmt = null;
 		try {
@@ -105,7 +119,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			try {
 				conn.rollback();// roll back updates to the database , If there is error
 			} catch (SQLException e1) {
-				throw new Exception("The Rollback connection failed");
+				throw new DBException("The Rollback connection failed");
 			}
 		} finally {
 			// finally block used to close resources
@@ -113,13 +127,13 @@ public class CustomerDBDAO implements CustomerDAO {
 				if (pstmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new DBException("The close connection action faild");
 			}
 
 		}
@@ -127,10 +141,14 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public void updateCustomer(Customer customer) throws Exception {
+	public void updateCustomer(Customer customer) throws DBException {
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 		try {
 			//create statement
@@ -142,32 +160,36 @@ public class CustomerDBDAO implements CustomerDAO {
 			"' WHERE ID=" + customer.getId();
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			throw new Exception("update customer failed");
+			throw new DBException("update customer failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 
 		}
 		System.out.println(customer.getCustomerName() + " successfully Updated from the DB");
 	}
 
-	public Customer getCustomer(long id) throws Exception {
+	public Customer getCustomer(long id) throws DBException {
 		
 		Customer customer = new Customer(); 
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 		
 		try {
@@ -183,20 +205,20 @@ public class CustomerDBDAO implements CustomerDAO {
 			customer.setPassword(resultSet.getString(3));
 			//TODO - Add the coupons list from the ArrayCollection 
 		} catch (SQLException e) {
-			throw new Exception("update customer failed");
+			throw new DBException("update customer failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 
 		}
@@ -204,12 +226,16 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public Set<Coupon> getCoupons() throws Exception {
+	public Set<Coupon> getCoupons() throws DBException {
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 
 		try {
@@ -237,20 +263,20 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 
 		} catch (SQLException e) {
-			throw new Exception("Retriev all the coupons failed");
+			throw new DBException("Retriev all the coupons failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new DBException("The close connection action faild");
 			}
 
 		}
@@ -261,20 +287,24 @@ public class CustomerDBDAO implements CustomerDAO {
 	}
 
 	@Override
-	public Boolean login(String ccustName, String password) throws Exception {
+	public Boolean login(String ccustName, String password) throws DBException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Set<Customer> getAllCustomer() throws Exception {
+	public Set<Customer> getAllCustomer() throws DBException {
 		// TODO Auto-generated method stub
 		
 		Set<Customer> customers = new HashSet<Customer>(); 
 		
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 		
 		try {
@@ -294,20 +324,20 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 			
 		} catch (SQLException e) {
-			throw new Exception("Retriev all the coupons failed");
+			throw new DBException("Retriev all the coupons failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new DBException("The close connection action faild");
 			}
 
 		}
@@ -315,14 +345,18 @@ public class CustomerDBDAO implements CustomerDAO {
 		
 	}
 	
-	public void printAllCustmers() throws Exception { 
+	public void printAllCustmers() throws DBException { 
 
 		// TODO Auto-generated method stub
 		Customer customer = new  Customer(); 
 				
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 		
 		try {
@@ -342,32 +376,35 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 			
 		} catch (SQLException e) {
-			throw new Exception("Retriev all the coupons failed");
+			throw new DBException("Retriev all the coupons failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				// do nothing
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				se.printStackTrace();
+				throw new DBException("The close connection action faild");
 			}
 
 		}
 		
 	}
-	public Customer getCustomer(String CUST_NAME) throws Exception 
+	public Customer getCustomer(String CUST_NAME) throws DBException 
 	{ 
 
 		Customer customer = new Customer(); 
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		java.sql.Statement stmt = null;
 		
 		try {
@@ -390,32 +427,36 @@ public class CustomerDBDAO implements CustomerDAO {
 
 		} catch (SQLException e) {
 			  System.out.println(e.getMessage());
-			throw new Exception("get customer failed");
+			throw new DBException("get customer failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild"); 
+				throw new DBException("The close connection action faild");
 			}
 
 		}
 	return customer; 
 	}
 	
-	public void purchaseCoupon(Coupon coupon, Customer customer ) throws Exception {
+	public void purchaseCoupon(Coupon coupon, Customer customer ) throws DBException {
 		
 		long id_inc = 0; 
 		// Open a connection
-		conn = DriverManager.getConnection(Utils.getDBUrl());
-		// Define the Execute query
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			throw new DBException("The Connection is faild");
+		}
 		System.out.println(coupon);
 		System.out.println(customer);
 		String sql1 = "SELECT * FROM COUPON";
@@ -443,20 +484,20 @@ public class CustomerDBDAO implements CustomerDAO {
             
 		} catch (SQLException e) {
 			// Handle errors for JDBC
-			throw new Exception("Purchased Coupon failed");
+			throw new DBException("Purchased Coupon failed");
 		} finally {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild");
+				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
 					conn.close();
 			} catch (SQLException se) {
-				throw new Exception("The close connection action faild");
+				throw new DBException("The close connection action faild");
 			}
 
 		}

@@ -2,6 +2,7 @@ package DB.DAO;
 import java.util.ArrayList;
 import java.util.Set;
 
+import DB.DBException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -22,19 +23,19 @@ public interface CustomerDAO {
 	 * login 
 	 */
 
-	void createCustomer(Customer customer) throws Exception; 
+	void createCustomer(Customer customer) throws DBException; 
 	
-	void removeCustomer(Customer customer) throws Exception;
+	void removeCustomer(Customer customer) throws DBException;
 
-	void updateCustomer(Customer customer) throws Exception;
+	void updateCustomer(Customer customer) throws DBException;
 
-	Customer getCustomer(String CUST_NAME) throws Exception;
+	Customer getCustomer(String CUST_NAME) throws DBException;
 	
-	Set<Customer> getAllCustomer() throws Exception;	
+	Set<Customer> getAllCustomer() throws DBException;	
 	
-	Set<Coupon> getCoupons() throws Exception; 
+	Set<Coupon> getCoupons() throws DBException; 
 	
-	Boolean login(String custName, String password) throws Exception; 
+	Boolean login(String custName, String password) throws DBException; 
 	
 	
 	

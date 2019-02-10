@@ -13,6 +13,7 @@ import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import JavaBeans.Customer;
 import Main.Utils;
+import Main.CouponSystem.clientType;
 
 public class CustomerFacade implements CouponClientFacade {
 	
@@ -35,12 +36,12 @@ public class CustomerFacade implements CouponClientFacade {
     private Customer customer = new Customer(); 
     private String CUST_NAME = null; 
     private String PASS = null;
-    private String clientType = null; 
+    private Main.CouponSystem.clientType clientType = null; 
     private Connection conn; 
     private CustomerDBDAO  customerDBDAO = new CustomerDBDAO();
 	
 	/*************************************CTOR***********************************************/
-	public CustomerFacade() throws Exception 
+	public CustomerFacade() 
 	{
 	//TODO//
 	
@@ -48,10 +49,10 @@ public class CustomerFacade implements CouponClientFacade {
 	
 	/*************************************Methods********************************************/	
 	@Override
-	public CouponClientFacade login(String name, String password, String clientType) {
+	public CouponClientFacade login(String name, String password, clientType cType) {
 		this.CUST_NAME = name; 
 		this.PASS = password; 
-		this.clientType = clientType; 
+		this.clientType = cType; 
 		
 		return null;
 

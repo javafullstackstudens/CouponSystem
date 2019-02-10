@@ -23,6 +23,7 @@ import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import JavaBeans.Customer;
+import Main.CouponSystem.clientType;
 
 public class Test {
 
@@ -42,14 +43,16 @@ public class Test {
         adminFacade.createCustomer(customer2);
 	/****************************Test-CreateCoupon*********************************/
 		CompanyFacade companyFacade = new CompanyFacade(); 
-		companyFacade.login(company.getCompName(), company.getPassword(), "Gold");
+		companyFacade.login(company.getCompName(), company.getPassword(),clientType.Company);
         companyFacade.createCoupon(coupon1);
         companyFacade.createCoupon(coupon);
+        System.out.println(companyFacade.getAllCoupons()); 
+        
     
     /****************************Test-PurchasedCoupon*****************************/
 
         CustomerFacade customerFacade = new CustomerFacade(); 
-        customerFacade.login(customer.getCustomerName(),customer.getPassword(), "Gold"); 
+        customerFacade.login(customer.getCustomerName(),customer.getPassword(),clientType.Customer); 
         customerFacade.purchaseCoupon(coupon1);
         
 		

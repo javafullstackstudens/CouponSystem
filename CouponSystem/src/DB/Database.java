@@ -50,7 +50,7 @@ public class Database {
 		// Name of database - MyDB
 	}
 
-	public static void createTables(Connection con) throws Exception  {
+	public static void createTables(Connection con) throws DBException, SQLException  {
 		
 	    //Connection
 	
@@ -137,9 +137,6 @@ public class Database {
 			conn.close();
 		}
 }
-
-
-	
 
 	
 	public static void selectTableCompany() throws SQLException {

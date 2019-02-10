@@ -5,14 +5,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Set;
 
 import DB.ConnPool;
+import DB.DBException;
 import DB.DBDAO.CompanyDBDAO;
 import DB.DBDAO.CouponDBDAO;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import Main.Utils;
+import Main.CouponSystem.clientType;
 
 public class CompanyFacade implements CouponClientFacade {
 	
@@ -47,7 +50,7 @@ public class CompanyFacade implements CouponClientFacade {
 	
 	/**************************************Methods*******************************************/
 	@Override
-	public CouponClientFacade login(String name, String password, String clientType) {
+	public CouponClientFacade login(String name, String password, clientType cType) {
 		// TODO Auto-generated method stub
 		this.COMP_NAME = name; 
 		this.pass = password; 
@@ -74,10 +77,13 @@ public class CompanyFacade implements CouponClientFacade {
 		
 	}
 	
-	public Set<Coupon> getAllCoupons() 
+	public Set<Coupon> getAllCoupons() throws DBException 
 
 	{
-		return null; 
+		Set<Coupon> allCoupons = new HashSet<Coupon>(); 
+		allCoupons = couponDBDAO.getAllCoupouns(); 
+		
+		return allCoupons; 
 		
 	}
 	

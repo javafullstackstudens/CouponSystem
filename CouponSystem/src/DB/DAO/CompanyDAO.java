@@ -1,6 +1,9 @@
 package DB.DAO;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Set;
+
+import DB.DBException;
 import JavaBeans.*;
 
 public interface CompanyDAO {
@@ -18,19 +21,19 @@ public interface CompanyDAO {
 	 * @throws Exception
 	 */
       
-		void createCompany(Company company ) throws Exception; 
+		void createCompany(Company company ) throws DBException; 
 
-		void removeCompany(Company company) throws Exception;
+		void removeCompany(Company company) throws DBException;
 
-		void updateCompany(Company company) throws Exception;
+		void updateCompany(Company company) throws DBException;
 
-		Company getCompany(long id) throws Exception;
+		Company getCompany(long id) throws DBException;
 		
-		Set<Company> getAllCompanies() throws Exception;	
+		Set<Company> getAllCompanies() throws DBException;	
 		
-		Set<Coupon> getCoupons() throws Exception; 
+		Set<Coupon> getCoupons() throws DBException; 
 		
-		Boolean login(String compName, String password) throws Exception; 
+		Boolean login(String compName, String password) throws DBException; 
 	
 		
 	}

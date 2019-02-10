@@ -1,8 +1,10 @@
 package Facade;
 
+import Main.CouponSystem.clientType;
+
 public interface CouponClientFacade {
 	
-	public CouponClientFacade login(String name, String password,String clientType) throws Exception; 
+
+	public CouponClientFacade login(String name, String password,clientType cType) throws Exception; 
 
 }
-

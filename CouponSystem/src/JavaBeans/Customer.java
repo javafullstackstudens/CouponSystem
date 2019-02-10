@@ -14,6 +14,7 @@ public class Customer {
 	private String CustomerName;
 	private String password;
 	ArrayList<Coupon> coupons = new ArrayList<Coupon>();
+	public enum CustomerType {REGULAR, ADMIN, COMPANY;}
 	
 	
 	// Ctors
