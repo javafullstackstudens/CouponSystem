@@ -22,9 +22,16 @@ public class CompanyDBDAO implements CompanyDAO {
 	 * This class implement basic methods between the application level to the DB
 	 * such as C.R.U.D. the logic of the program dosen't implement in this level.
 	 * this level is the only connection to the SQL database,this level uses a
-	 * connection pool as a data access pattern It Contains : createCompany
-	 * removeComapny updateComapny getCompany getAllCompanies getCoupons
-	 * printAllCompmies getCompany
+	 * connection pool as a data access pattern It Contains : 
+	 * createCompany
+	 * removeComapny 
+	 * updateComapny 
+	 * getCompany 
+	 * getAllCompanies 
+	 * getCoupons
+	 * printAllCompmies 
+	 * getCompany
+	 * @throws DBException
 	 */
 
 	/**************************************
@@ -44,7 +51,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	/*****************************************
 	 * Methods
 	 * 
-	 * @throws SQLException
+	 * @throws DBException
 	 *******************************************/
 	@Override
 
@@ -133,26 +140,30 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	@Override
 	public void updateCompany(Company company) throws DBException {
-		// create statment
 		try {
 			conn = DriverManager.getConnection(Utils.getDBUrl());
 		} catch (SQLException e1) {
 			throw new DBException("The Connection is faild");
 		}
-		java.sql.Statement stmt = null;
+		// create the Execute query String 
+		PreparedStatement pstms = null; 
+		String sqlString = "UPDATE COMPANY SET COMP_NAME= ?,  PASSWORD = ?, EMAIL = ?  WHERE ID = ? ";
 
 		try {
-			stmt = conn.createStatement();
-			String sql = "UPDATE COMPANY " + "SET COMP_NAME='" + company.getCompName() + "', PASSWORD = '"
-					+ company.getPassword() + "', EMAIL = '" + company.getEmail() + "' WHERE ID=" + company.getId();
-			stmt.executeUpdate(sql);
+			// create PreparedStatement and build the SQL query
+			pstms = conn.prepareStatement(sqlString); 	
+			pstms.setString(1,company.getCompName());
+			pstms.setString(2,company.getPassword());  
+		    pstms.setString(3,company.getEmail());
+		    pstms.setLong(4, company.getId());
+			pstms.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new DBException("update customer failed");
 		} finally {
 			// finally block used to close resources
 			try {
-				if (stmt != null)
+				if (pstms != null)
 					conn.close();
 			} catch (SQLException se) {
 				throw new DBException("The close connection action faild");
@@ -165,7 +176,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
-		System.out.println(company.getCompName() + " successfully Updated from the DB");
+		System.out.println(company.getCompName() + " successfully Updated");
 
 	}
 

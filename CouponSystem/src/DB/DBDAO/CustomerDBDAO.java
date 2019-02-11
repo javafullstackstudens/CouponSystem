@@ -39,7 +39,7 @@ public class CustomerDBDAO implements CustomerDAO {
 	 * getAllCustomer
 	 * getCouponByType
 	 * getCoupons
-	 * @throws Exception
+	 * @throws DBException
 	 * login 
 	 */
 	
@@ -53,8 +53,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		// TODO Auto-generated constructor stub
 	}
 	
-	/*******************************************Methods
-	 * @throws SQLException *********************************************/ 
+	/*******************************************Methods*********************************************/ 
 	@Override
 	public void createCustomer(Customer customer) throws DBException{
 		// TODO Auto-generated method stub
@@ -149,22 +148,24 @@ public class CustomerDBDAO implements CustomerDAO {
 			// TODO Auto-generated catch block
 			throw new DBException("The Connection is faild");
 		}
-		java.sql.Statement stmt = null;
+		// create the Execute query
+				PreparedStatement pstms = null; 
+				String sqlString = "UPDATE CUSTOMER SET CUST_NAME= ?, PASSWORD = ? WHERE ID = ? "; 
 		try {
-			//create statement
-			stmt = conn.createStatement();
-			//build The SQL query
-			String sql = "UPDATE CUSTOMER " + 
-			"SET CUST_NAME='" + customer.getCustomerName() + 
-			"', PASSWORD = '" + customer.getPassword() + 
-			"' WHERE ID=" + customer.getId();
-			stmt.executeUpdate(sql);
+			// create PreparedStatement and build the SQL query
+			pstms = conn.prepareStatement(sqlString);
+			pstms.setString(1, customer.getCustomerName());
+			pstms.setString(2, customer.getPassword());
+			pstms.setLong(3, customer.getId());
+			
+
+			pstms.executeUpdate();
 		} catch (SQLException e) {
 			throw new DBException("update customer failed");
 		} finally {
 			// finally block used to close resources
 			try {
-				if (stmt != null)
+				if (pstms != null)
 					conn.close();
 			} catch (SQLException se) {
 				throw new DBException("The close connection action faild");
@@ -177,7 +178,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			}
 
 		}
-		System.out.println(customer.getCustomerName() + " successfully Updated from the DB");
+		System.out.println(customer.getCustomerName() + " successfully Updated");
 	}
 
 	public Customer getCustomer(long id) throws DBException {
@@ -395,6 +396,7 @@ public class CustomerDBDAO implements CustomerDAO {
 		}
 		
 	}
+	
 	public Customer getCustomer(String CUST_NAME) throws DBException 
 	{ 
 

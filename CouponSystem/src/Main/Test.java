@@ -29,12 +29,11 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		
-        Database.getDatabase(); 
-		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
+		Company company = new Company(2, "mPrest", "12345", "oriel@test.com");
 		Coupon coupon = new Coupon(4, "Evi The King", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
 		Customer customer = new Customer(3, "Oriel", "1234");
-		Customer customer2 = new Customer(5,"Evi", "221284");
-		Coupon coupon1 = new Coupon(3, "Noam&Omer", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
+		Customer customer2 = new Customer(4,"Evi", "12345");
+		Coupon coupon1 = new Coupon(3, "Noam&Omer", Utils.getDate(), Utils.endDate(20),5555, CouponType.HEALTH,"wtf", 1251, "image");
 		
 	/************************************Admin-Facade-Test************************/	
         AdminFacade adminFacade = new AdminFacade(); 
@@ -55,10 +54,7 @@ public class Test {
         customerFacade.login(customer.getCustomerName(),customer.getPassword(),clientType.Customer); 
         customerFacade.purchaseCoupon(coupon1);
         
-		
-		
-		
-		
+
 		
 //		/**************Coupon HashSet Collection TEST****************/
 //		Set<Coupon> coupons = new HashSet<Coupon>();

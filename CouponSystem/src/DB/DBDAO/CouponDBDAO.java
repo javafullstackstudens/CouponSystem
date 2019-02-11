@@ -14,7 +14,9 @@ import java.sql.ResultSet;
 import javax.management.Query;
 
 import org.apache.derby.client.net.Typdef;
+import org.apache.derby.impl.sql.execute.UpdateConstantAction;
 
+import com.sun.org.apache.xerces.internal.util.Status;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import DB.DBException;
@@ -32,6 +34,7 @@ public class CouponDBDAO implements CouponDAO {
 	 * This class implements basic methods between the application level to the DB such as C.R.U.D.
 	 * the logic of the program doesn't implement in this level. 
 	 * this level is the only connection to the SQL database,this level uses a connection pool as a data access pattern 
+	 * Used prepared statements to prevent SQL injection 
 	 * createCoupon
 	 * removeCoupon 
 	 * updateCoupon
@@ -40,6 +43,7 @@ public class CouponDBDAO implements CouponDAO {
 	 * getCouponByType
 	 * createCoupon
 	 * login 
+	 * @throws DBException
 	 */
 		
 	/*****************************************Attributes*********************************************/ 
@@ -97,41 +101,38 @@ public class CouponDBDAO implements CouponDAO {
 		}
 		System.out.println(coupon.getTitle() + " successfully Removed from the DB");
 	}
-
+	
 	@Override
-	public void updateCoupon(Coupon coupon) throws DBException {
-		// create statment
+ 	public void updateCoupon(Coupon coupon) throws DBException {
 		try {
 			conn = DriverManager.getConnection(Utils.getDBUrl());
 		} catch (SQLException e1) {
 			throw new DBException("The Connection is faild");
 		}
 		// create the Execute query
-		java.sql.Statement stmt = null;
+		PreparedStatement pstms = null; 
+		String sqlString = "UPDATE COUPON SET TITLE = ?, START_DATE = ?, END_DATE = ? , AMOUNT = ?, TYPE = ?, MESSAGE = ?, PRICE = ?,  IMAGE = ? WHERE ID = ? "; 
 
 		try {
-			// create statement and build the SQL query
-			stmt = conn.createStatement();
-			String sql = "UPDATE COUPON " + 
-			"SET TITLE ='" + coupon.getTitle() + 
-			"', START_DATE= '"+ (Date) coupon.getStartDate() + 
-			"', END_DATE= '" + (Date) coupon.getEndDate() + 
-			"', AMOUNT= "+ coupon.getAmount() + 
-			", TYPE= '" + coupon.getType() + 
-			"', MESSAGE= '" + coupon.getMessage()+ 
-			"', PRICE = " + coupon.getPrice() + 
-			", IMAGE = '" + coupon.getImage() + 
-			"'WHERE ID= "+ coupon.getId();
-
-
-			stmt.executeUpdate(sql);
+			// create PreparedStatement and build the SQL query
+			pstms = conn.prepareStatement(sqlString); 			 
+			pstms.setString(1,coupon.getTitle());
+			pstms.setDate(2,(Date)coupon.getStartDate()); 
+			pstms.setDate(3, (Date)coupon.getEndDate());
+			pstms.setLong(4, coupon.getAmount());
+			pstms.setString(5,coupon.getType().name());
+			pstms.setString(6 ,coupon.getMessage());
+			pstms.setDouble(7,coupon.getPrice());
+			pstms.setString(8,coupon.getImage());
+			pstms.setLong(9,coupon.getId());
+			pstms.executeUpdate();
 
 		} catch (SQLException e) {
 			throw new DBException("update coupon failed with id =" + coupon.getId());
 		} finally {
 			// finally block used to close resources
 			try {
-				if (stmt != null)
+				if (pstms != null)
 					conn.close();
 			} catch (SQLException se) {
 				throw new DBException("The close connection action faild");
@@ -144,10 +145,10 @@ public class CouponDBDAO implements CouponDAO {
 			}
 
 		}
-		System.out.println(coupon.getTitle() + " successfully Updated from the DB");
+		System.out.println(coupon.getTitle() + " successfully Updated");
 
 	}
-
+	
 	@Override
 	public Coupon getCoupon(long id) throws DBException {
 		Coupon coupon = new Coupon();
@@ -323,7 +324,7 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public synchronized Set<Coupon> getCouponByType(Coupon coupon) throws DBException {
 
-		Coupon coupon1 = new Coupon();
+		
 		Set<Coupon> coupons = new HashSet<Coupon>();
 		// Open a connection
 		try {
@@ -347,6 +348,7 @@ public class CouponDBDAO implements CouponDAO {
 				// Check the type of the Coupon
 				if (coupon.getType().equals(type)) {
 
+					Coupon coupon1 = new Coupon();
 					coupon1.setId(resultSet.getLong(1));
 					coupon1.setTitle(resultSet.getString(2));
 					coupon1.setStartDate((Date) resultSet.getDate(3));

@@ -9,10 +9,6 @@ public class DBException extends Exception{
 		// TODO Auto-generated constructor stub
 	}
 
-	public DBException(Throwable cause) {
-		super(cause);
-		// TODO Auto-generated constructor stub
-	}
 
 
 	
