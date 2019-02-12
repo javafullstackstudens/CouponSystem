@@ -54,6 +54,7 @@ public class CompanyFacade implements CouponClientFacade {
 		// TODO Auto-generated method stub
 		this.COMP_NAME = name; 
 		this.pass = password; 
+		
 		return null;
 	}
 	

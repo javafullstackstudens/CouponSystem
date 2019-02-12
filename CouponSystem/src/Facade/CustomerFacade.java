@@ -54,6 +54,8 @@ public class CustomerFacade implements CouponClientFacade {
 		this.PASS = password; 
 		this.clientType = cType; 
 		
+		
+		
 		return null;
 
 	}

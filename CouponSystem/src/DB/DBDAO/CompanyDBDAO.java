@@ -6,8 +6,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
+
+import com.sun.xml.internal.bind.v2.model.core.ID;
+
 import Main.*;
 import DB.ConnPool;
 import DB.DBException;
@@ -22,15 +32,10 @@ public class CompanyDBDAO implements CompanyDAO {
 	 * This class implement basic methods between the application level to the DB
 	 * such as C.R.U.D. the logic of the program dosen't implement in this level.
 	 * this level is the only connection to the SQL database,this level uses a
-	 * connection pool as a data access pattern It Contains : 
-	 * createCompany
-	 * removeComapny 
-	 * updateComapny 
-	 * getCompany 
-	 * getAllCompanies 
-	 * getCoupons
-	 * printAllCompmies 
-	 * getCompany
+	 * connection pool as a data access pattern It Contains : createCompany
+	 * removeComapny updateComapny getCompany getAllCompanies getCoupons
+	 * printAllCompmies getCompany
+	 * 
 	 * @throws DBException
 	 */
 
@@ -39,6 +44,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	 *******************************************/
 	static Connection conn;
 	private Company company;
+	CouponDBDAO couponDBDAO = new CouponDBDAO(); 
 
 	/******************************************
 	 * CTOR
@@ -91,12 +97,16 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
-		System.out.println("Company " + company.getCompName()); 
+		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+		JOptionPane.showMessageDialog(frame, "Company " + company.getCompName() + " Created");
 	}
-
 
 	public void removeCompany(Company company) throws DBException {
 
+		// retrieve the PK by the company name
+		Company companyLocal = new Company(); 
+		companyLocal = getCompany(company.getCompName());
+		
 		// Open a connection
 		try {
 			conn = DriverManager.getConnection(Utils.getDBUrl());
@@ -106,13 +116,14 @@ public class CompanyDBDAO implements CompanyDAO {
 		// Define the Execute query
 		String sql = "DELETE FROM COMPANY WHERE id=?";
 		PreparedStatement pstmt = null;
+		System.out.println(companyLocal);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			conn.setAutoCommit(false);// turn off auto-commit
-			pstmt.setLong(1, company.getId()); // Sets the designated parameter to the given Java long value
+			pstmt.setLong(1, companyLocal.getId()); // Sets the designated parameter to the given Java long value
 			pstmt.executeUpdate();
 			conn.commit();// Commit the changes,If there is no error.
-			System.out.println(company.getCompName() + " successfully Removed from the DB");
+
 		} catch (SQLException e) {
 			try {
 				conn.rollback();// roll back updates to the database , If there is error
@@ -135,9 +146,71 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
-
+		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+		JOptionPane.showMessageDialog(frame, "Removed company " + company.getCompName()  + " successfully");
 	}
 
+	public void removeCompanyCoupons (Company company) throws DBException { 
+		
+		Set<Coupon> allCoupons = new HashSet<Coupon>();
+		allCoupons = getCompanyCoupons(company);
+		long id ; 
+		// Open a connection
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e2) {
+			throw new DBException("The Connection is faild");
+		}
+		
+		String sql= "DELETE FROM COMPANY_COUPON WHERE COUPON_ID=?";
+		PreparedStatement pstmt = null; 
+		
+		try {
+			// Remove all the company coupons from the join table 
+			Iterator<Coupon> itr = allCoupons.iterator();
+			while (itr.hasNext()) {
+				pstmt = conn.prepareStatement(sql);
+				conn.setAutoCommit(false);// turn off auto-commit
+				id =  itr.next().getId();
+				pstmt.setLong(1,id);
+				pstmt.executeUpdate();
+				conn.commit();
+				
+			}
+			
+			//Remove all the company coupons from coupon table  
+			Iterator<Coupon> itr2 = allCoupons.iterator(); 
+			while(itr2.hasNext()) { 
+				couponDBDAO.removeCoupon(itr2.next());
+			}
+			
+			
+		} catch (SQLException e) {
+			try {
+				conn.rollback();// roll back updates to the database , If there is error
+			} catch (SQLException e1) {
+				throw new DBException(e1.getMessage());
+			}
+		} finally {
+			// finally block used to close resources
+			try {
+				if (pstmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new DBException("The close connection action faild");
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new DBException("The close connection action faild");
+			}
+
+		}
+			
+
+			
+	 }
 	@Override
 	public void updateCompany(Company company) throws DBException {
 		try {
@@ -145,19 +218,18 @@ public class CompanyDBDAO implements CompanyDAO {
 		} catch (SQLException e1) {
 			throw new DBException("The Connection is faild");
 		}
-		// create the Execute query String 
-		PreparedStatement pstms = null; 
-		String sqlString = "UPDATE COMPANY SET COMP_NAME= ?,  PASSWORD = ?, EMAIL = ?  WHERE ID = ? ";
+		// create the Execute query String
+		PreparedStatement pstms = null;
+		String sqlString = "UPDATE COMPANY SET PASSWORD = ?, EMAIL = ?  WHERE ID = ? ";
 
 		try {
 			// create PreparedStatement and build the SQL query
-			pstms = conn.prepareStatement(sqlString); 	
-			pstms.setString(1,company.getCompName());
-			pstms.setString(2,company.getPassword());  
-		    pstms.setString(3,company.getEmail());
-		    pstms.setLong(4, company.getId());
+			pstms = conn.prepareStatement(sqlString);
+			pstms.setString(1, company.getPassword());
+			pstms.setString(2, company.getEmail());
+			pstms.setLong(3,company.getId());
 			pstms.executeUpdate();
-
+			System.out.println(company);
 		} catch (SQLException e) {
 			throw new DBException("update customer failed");
 		} finally {
@@ -176,7 +248,10 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
-		System.out.println(company.getCompName() + " successfully Updated");
+		
+		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+		JOptionPane.showMessageDialog(frame, "Updated company " + company.getCompName()  + " successfully");
+		
 
 	}
 
@@ -197,12 +272,12 @@ public class CompanyDBDAO implements CompanyDAO {
 			stmt = conn.createStatement();
 			// build The SQL query
 			String sql = "SELECT * FROM COMPANY WHERE ID=" + id;
+
 			// Set the results from the database
 			ResultSet resultSet = stmt.executeQuery(sql);
 			// constructor the object, retrieve the attributes from the results
 			resultSet.next();
 			company.setId(resultSet.getLong(1));
-			;
 			company.setCompName(resultSet.getString(2));
 			company.setPassword(resultSet.getString(3));
 			company.setEmail(resultSet.getString(4));
@@ -255,11 +330,9 @@ public class CompanyDBDAO implements CompanyDAO {
 			while (resultSet.next()) {
 				Company company = new Company();
 				company.setId(resultSet.getLong(1));
-				;
 				company.setCompName(resultSet.getString(2));
 				company.setPassword(resultSet.getString(3));
 				company.setEmail(resultSet.getString(4));
-
 				companies.add(company);
 			}
 
@@ -282,67 +355,7 @@ public class CompanyDBDAO implements CompanyDAO {
 
 		}
 
-		return null;
-	}
-
-	@Override
-	public synchronized Set<Coupon> getCoupons() throws DBException {
-
-		Coupon coupon = new Coupon();
-		Set<Coupon> coupons = new HashSet<Coupon>();
-
-		// Open a connection
-		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			throw new DBException("The Connection is faild");
-		}
-		// Define the Execute query
-		java.sql.Statement stmt = null;
-
-		try {
-			stmt = conn.createStatement();
-			// build The SQL query
-			String sql = "SELECT * FROM COMPANY";
-			// Set the results from the database
-			ResultSet resultSet = stmt.executeQuery(sql);
-			// constructor the object, retrieve the attributes from the results
-			while (resultSet.next()) {
-
-				coupon.setId(resultSet.getLong(1));
-				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate((Date) resultSet.getDate(3));
-				coupon.setEndDate((Date) resultSet.getDate(4));
-				coupon.setAmount(resultSet.getInt(5));
-				CouponType type = CouponType.valueOf(resultSet.getString(6)); // Convert String to Enum
-				coupon.setType(type);
-				coupon.setMessage(resultSet.getString(7));
-				coupon.setPrice(resultSet.getDouble(8));
-				coupon.setImage(resultSet.getString(9));
-
-				coupons.add(coupon);
-
-			}
-
-		} catch (SQLException e) {
-			throw new DBException("Retriev all the coupons failed");
-		} finally {
-			// finally block used to close resources
-			try {
-				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new DBException("The close connection action faild");
-			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				throw new DBException("The close connection action faild");
-			}
-
-		}
-		return coupons;
+		return companies;
 	}
 
 	public void printAllCompmies() throws DBException {
@@ -409,6 +422,7 @@ public class CompanyDBDAO implements CompanyDAO {
 	public Company getCompany(String comp_name) throws DBException {
 		// Open a connection
 		Company company = new Company();
+		
 		try {
 			conn = DriverManager.getConnection(Utils.getDBUrl());
 		} catch (SQLException e1) {
@@ -453,8 +467,90 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
+		
 		return company;
+	
 
+	}
+
+	@Override
+	public synchronized Set<Coupon> getCompanyCoupons(Company company) throws DBException {
+
+		Set<Coupon> coupons = new HashSet<Coupon>();
+		ArrayList<Long> couponIDs = new ArrayList<Long>();
+		
+		//Retrieve the PK of the company by name 
+		Company companyLocal = new Company(); 
+		companyLocal = getCompany(company.getCompName()); 
+
+		// Open a connection
+		try {
+			conn = DriverManager.getConnection(Utils.getDBUrl());
+		} catch (SQLException e1) {
+			throw new DBException("The Connection is faild");
+		}
+		// Define the Execute query
+		java.sql.Statement stmt = null;
+		java.sql.Statement stmt1 = null;
+
+		try {
+			stmt = conn.createStatement();
+			stmt1 = conn.createStatement(); 
+			// build The SQL query
+			String sql = "SELECT * FROM COUPON";
+			String sql1 = "SELECT * FROM COMPANY_COUPON";
+			// Set the results from the database,
+			ResultSet resultSet = stmt.executeQuery(sql);
+			ResultSet resultSet2 = stmt1.executeQuery(sql1);
+			// constructor the object, retrieve the attributes from the results
+
+			while (resultSet2.next()) {
+
+				if (resultSet2.getLong(1) == companyLocal.getId()) {
+					couponIDs.add(resultSet2.getLong(2));
+				}
+			}
+			while (resultSet.next()) {
+				if (couponIDs.contains(resultSet.getLong(1))) {
+					
+					Coupon coupon = new Coupon();
+					coupon.setId(resultSet.getLong(1));
+					coupon.setTitle(resultSet.getString(2));
+					coupon.setStartDate((Date) resultSet.getDate(3));
+					coupon.setEndDate((Date) resultSet.getDate(4));
+				
+					coupon.setAmount(resultSet.getInt(5));
+					CouponType type = CouponType.valueOf(resultSet.getString(6)); // Convert String to Enum
+					coupon.setType(type);
+					coupon.setMessage(resultSet.getString(7));
+					coupon.setPrice(resultSet.getDouble(8));
+					coupon.setImage(resultSet.getString(9));
+
+					coupons.add(coupon);
+				}
+
+			}
+
+		} catch (SQLException e) {
+       	throw new DBException("Retriev all the coupons failed");
+
+		} finally {
+			// finally block used to close resources
+			try {
+				if (stmt != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new DBException("The close connection action faild");
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (SQLException se) {
+				throw new DBException("The close connection action faild");
+			}
+
+		}
+		return coupons;
 	}
 
 }

@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.sql.ResultSet;
 import javax.management.Query;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.apache.derby.client.net.Typdef;
 import org.apache.derby.impl.sql.execute.UpdateConstantAction;
@@ -70,6 +72,7 @@ public class CouponDBDAO implements CouponDAO {
 		// Define the Execute query
 		String sql = "DELETE FROM COUPON WHERE id=?";
 		PreparedStatement pstmt = null;
+		System.out.println(coupon);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			conn.setAutoCommit(false);// turn off auto-commit
@@ -450,8 +453,8 @@ public class CouponDBDAO implements CouponDAO {
 			}
 
 		}
-		System.out.println("Coupon " + coupon.getTitle() + " inserted successfully");
-
+		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+		JOptionPane.showMessageDialog(frame, "Coupon " + coupon.getTitle() + " inserted successfully");
 		
 	}
 

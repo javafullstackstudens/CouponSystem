@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import DB.DBException;
+
 import JavaBeans.*;
 
 public interface CompanyDAO {
@@ -31,7 +32,7 @@ public interface CompanyDAO {
 		
 		Set<Company> getAllCompanies() throws DBException;	
 		
-		Set<Coupon> getCoupons() throws DBException; 
+		public Set<Coupon> getCompanyCoupons(Company company) throws DBException; 
 		
 		Boolean login(String compName, String password) throws DBException; 
 	
