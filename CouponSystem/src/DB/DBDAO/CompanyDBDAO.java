@@ -97,8 +97,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			}
 
 		}
-		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-		JOptionPane.showMessageDialog(frame, "Company " + company.getCompName() + " Created");
+
 	}
 
 	public void removeCompany(Company company) throws DBException {
@@ -211,7 +210,9 @@ public class CompanyDBDAO implements CompanyDAO {
 
 			
 	 }
+	
 	@Override
+	
 	public void updateCompany(Company company) throws DBException {
 		try {
 			conn = DriverManager.getConnection(Utils.getDBUrl());
@@ -358,7 +359,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		return companies;
 	}
 
-	public void printAllCompmies() throws DBException {
+	public void printAllCompanies() throws DBException {
 
 		Company company = new Company();
 

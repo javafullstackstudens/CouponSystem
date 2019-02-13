@@ -31,11 +31,11 @@ public class Test {
 		
 //		Database.getDatabase(); 
 		
-		Company company = new Company(2, "Mashav", "12345", "oriel@test.com");
-		Coupon coupon = new Coupon(4, "Evi The King", Utils.getDate(), Utils.endDate(20),7000, CouponType.HEALTH,"wtf", 1251, "image");
+		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
+		Coupon coupon = new Coupon(4, "TestType", Utils.getDate(), Utils.endDate(20),7000, CouponType.CAMPING,"wtf", 1251, "image");
 		Customer customer = new Customer(3, "Oriel", "1234");
 		Customer customer2 = new Customer(4,"Evi", "221284");
-		Coupon coupon1 = new Coupon(3, "Noam&Omer", Utils.getDate(), Utils.endDate(20),5555, CouponType.HEALTH,"wtf", 1251, "image");
+		Coupon coupon1 = new Coupon(3, "Omer", Utils.getDate(), Utils.endDate(60),5555, CouponType.HEALTH,"wtf", 1251, "image");
 		Company company2 = new Company(3, "mPrest", "12345", "oriel@test.com"); 
 		
 	/************************************Admin-Facade-Test************************/	
@@ -45,7 +45,7 @@ public class Test {
 //        couponDBDAO.removeCoupon(coupon1);
 //        adminFacade.createCustomer(customer);
 //        adminFacade.createCustomer(customer2);
-//        adminFacade.createCompany(company2);
+//        adminFacade.createCompany(company);
 //        adminFacade.login("Mashav", "12345", clientType.Admin); 
 //        adminFacade.updateCompany(company,"Ee123456","Evi.cohen@gmail.com");
 //       Set<Company> companies = new HashSet<Company>(); 
@@ -58,13 +58,17 @@ public class Test {
        
 //        adminFacade.removeCustomer(customer2); 
 //        adminFacade.updateCompany(company2, newPassword, newEmail);
-        adminFacade.removeCompany(company);
+//        adminFacade.removeCompany(company);
 	/****************************Test-CreateCoupon*********************************/
-//		CompanyFacade companyFacade = new CompanyFacade(); 
-//		companyFacade.login(company.getCompName(), company.getPassword(),clientType.Company);
+		CompanyFacade companyFacade = new CompanyFacade(); 
+		companyFacade.login(company.getCompName(), company.getPassword(),clientType.Company);
 //        companyFacade.createCoupon(coupon1);
 //        companyFacade.createCoupon(coupon);
 //        System.out.println(companyFacade.getAllCoupons()); 
+//		companyFacade.removeCoupon(coupon1);
+//		companyFacade.createCoupon(coupon);
+		System.out.println(companyFacade.getCouponsByexpiredDate(Utils.endDate(10)));
+
         
     
     /****************************Test-PurchasedCoupon*****************************/
