@@ -57,14 +57,19 @@ public class CompanyFacade implements CouponClientFacade {
 	/**************************************Methods
 	 * @throws DBException *******************************************/
 	@Override
-	public CouponClientFacade login(String name, String password, clientType cType) throws DBException {
+	public Boolean login(String name, String password, clientType cType) throws DBException {
 		// TODO Auto-generated method stub
 		this.compName = name; 
 		this.pass = password;
-		//Create instance locally of company 
+		//Create instance locally of company 		
 		company = getCompany(compName);
+		//Authentication of the password and company name  
+		if (company.getCompName().equals(this.compName) && company.getPassword().equals(this.pass) && company != null) { 
+			return true; 
+		}
+		else return false;
 		
-		return null;
+		
 	}
 	
 	public void createCoupon(Coupon coupon) throws DBException { 

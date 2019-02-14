@@ -35,7 +35,7 @@ public class CustomerFacade implements CouponClientFacade {
 	/***************************************Attributes*****************************************/
 	private Customer customerLocaly = new Customer();
 	private String CUST_NAME = null;
-	private String PASS = null;
+	private String pass = null;
 	private clientType clientType = null;
 	private Connection conn;
 	private CustomerDBDAO customerDBDAO = new CustomerDBDAO();
@@ -48,14 +48,16 @@ public class CustomerFacade implements CouponClientFacade {
 
 	/*************************************Methods********************************************/
 	@Override
-	public CouponClientFacade login(String name, String password, clientType cType) throws DBException {
+	public Boolean login(String name, String password, clientType cType) throws DBException {
 		this.CUST_NAME = name;
-		this.PASS = password;
+		this.pass = password;
 		this.clientType = cType;
 		this.customerLocaly = customerDBDAO.getCustomer(CUST_NAME);
-
-		return null;
-
+		//Authentication of the password and company name  
+				if (customerLocaly.getCustomerName().equals(this.CUST_NAME)&&customerLocaly.getPassword().equals(this.pass) && customerLocaly != null) { 
+					return true; 
+				}
+				else return false;
 	}
 
 	public void purchaseCoupon(Coupon coupon) throws Exception {

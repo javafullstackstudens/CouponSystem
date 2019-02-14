@@ -47,13 +47,13 @@ public class AdminFacade implements CouponClientFacade {
 	 * Methods
 	 *******************************************/
 	@Override
-	public CouponClientFacade login(String name, String password, clientType cType) throws DBException {
+	public Boolean login(String name, String password, clientType cType) throws DBException {
 		// TODO Auto-generated method stub
-		 if ( name.equals(name) && pass.equals(pass)) { 
-			 return null; 
+		 if ( name.equals(this.name) && password.equals(this.pass)) { 
+			 return true; 
 		 }	
 
-		return null;
+		return false;
 	}
 
 	public void createCompany(Company company) throws Exception {

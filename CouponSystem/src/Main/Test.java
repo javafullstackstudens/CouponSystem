@@ -19,6 +19,7 @@ import DB.DBDAO.CouponDBDAO;
 import DB.DBDAO.CustomerDBDAO;
 import Facade.AdminFacade;
 import Facade.CompanyFacade;
+import Facade.CouponClientFacade;
 import Facade.CustomerFacade;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
@@ -32,7 +33,7 @@ public class Test {
 		
 //		Database.getDatabase(); 
 		
-		Company company = new Company(2, "Mellanox", "12345", "oriel@test.com");
+		Company company = new Company(2, "Shoshana", "12345", "oriel@test.com");
 		Coupon coupon = new Coupon(4, "ConnPool", Utils.getDate(), Utils.endDate(20),7000, CouponType.CAMPING,"wtf", 1251, "image");
 		Customer customer = new Customer(3, "Snir", "1234");
 		Customer customer2 = new Customer(4,"Evi", "221284");
@@ -40,13 +41,13 @@ public class Test {
 		Company company2 = new Company(3, "mPrest", "12345", "oriel@test.com"); 
 		
 	/************************************Admin-Facade-Test************************/	
-        AdminFacade adminFacade = new AdminFacade(); 
+//        AdminFacade adminFacade = new AdminFacade(); 
 //        adminFacade.removeCompany(company);
 //        CouponDBDAO couponDBDAO = new CouponDBDAO(); 
 //        couponDBDAO.removeCoupon(coupon1);
-        adminFacade.createCustomer(customer);
+//        adminFacade.createCustomer(customer);
 //        adminFacade.createCustomer(customer2);
-        adminFacade.createCompany(company);
+//        adminFacade.createCompany(company);
 //        adminFacade.login("Mashav", "12345", clientType.Admin); 
 //        adminFacade.updateCompany(company,"Ee123456","Evi.cohen@gmail.com");
 //       Set<Company> companies = new HashSet<Company>(); 
@@ -61,23 +62,41 @@ public class Test {
 //        adminFacade.updateCompany(company2, newPassword, newEmail);
 //        adminFacade.removeCompany(company);
 	/****************************Test-CreateCoupon*********************************/
-		CompanyFacade companyFacade = new CompanyFacade(); 
-		companyFacade.login(company.getCompName(), company.getPassword(),clientType.Company);
+//		CompanyFacade companyFacade = new CompanyFacade();
+//		companyFacade.login(company.getCompName(), company.getPassword(),clientType.Company);
 //        companyFacade.createCoupon(coupon1);
 //        companyFacade.createCoupon(coupon);
 //        System.out.println(companyFacade.getAllCoupons()); 
 //		companyFacade.removeCoupon(coupon1);
-		companyFacade.createCoupon(coupon);
+//		companyFacade.createCoupon(coupon);
 
-
+/*********************************************Test-Main****************************/ 
+		/*********Admin**************/
+		AdminFacade adminFacade2 = new AdminFacade();
+		adminFacade2 = (AdminFacade) CouponSystem.getCouponSystem().login("admin", "12346", clientType.Admin);
+        if ( adminFacade2 != null ) { 
+        	adminFacade2.createCompany(company);	
+        }
+		/*********Customer************/
+        CustomerFacade customerFacade = new CustomerFacade(); 
+        customerFacade = (CustomerFacade) CouponSystem.getCouponSystem().login("Evi", "2212846", clientType.Customer); 
+        if(customerFacade!=null) { 
+        	System.out.println(customerFacade.getAllPurchasedCoupons());
+        }
         
+        /*********Company************/
+        CompanyFacade companyFacade = new CompanyFacade(); 
+        companyFacade = (CompanyFacade) CouponSystem.getCouponSystem().login("Phoebus", "123456",clientType.Company);
+        if(companyFacade!=null) { 
+        	System.out.println(companyFacade.getCompanyCoupons(companyFacade.getCompany("Phoebus")));
+        }
     
     /****************************Test-PurchasedCoupon*****************************/
 
-        CustomerFacade customerFacade = new CustomerFacade(); 
-        customerFacade.login(customer2.getCustomerName(),customer2.getPassword(),clientType.Customer); 
+//        CustomerFacade customerFacade = new CustomerFacade(); 
+//        customerFacade.login(customer2.getCustomerName(),customer2.getPassword(),clientType.Customer); 
 //        System.out.println(customerFacade.getAllPurchasedCoupons());  
-        System.out.println(customerFacade.getAllPurchasedCouponsByPrice(1251));
+//        System.out.println(customerFacade.getAllPurchasedCouponsByPrice(1251));
 
         
 

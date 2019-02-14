@@ -1,5 +1,9 @@
 package Main;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import DB.ConnPool;
 import Facade.AdminFacade;
 import Facade.CompanyFacade;
 import Facade.CouponClientFacade;
@@ -29,31 +33,54 @@ public class CouponSystem {
 		switch (cType) {
 		case Admin:
 			AdminFacade adminFacade = new AdminFacade();
-            adminFacade.login(name, password, cType); 
-            return adminFacade; 
-            //TODO - DailyCouponExpirationTask
+			if (adminFacade.login(name, password, cType)) {
+				return adminFacade;
+				// TODO - DailyCouponExpirationTask
+			}
+			else { 
+				JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+				JOptionPane.showMessageDialog(frame, "The login failed, the Name or Password of the Admin is not valid, please try again !!!!");
+				return null; 
+			}
+
+			
 
 		case Customer:
 			CustomerFacade customerFacade = new CustomerFacade();
-			customerFacade.login(name, password, cType);
-			//TODO - DailyCouponExpirationTask
-			return customerFacade; 
+			if(customerFacade.login(name, password, cType)) { 
+				return customerFacade;
+				// TODO - DailyCouponExpirationTask
+			}
+			else { 
+				JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+				JOptionPane.showMessageDialog(frame, "The login failed, the Name or Password of the Customer is not valid, please try again !!!!");
+				return null; 
+			}
+			
+			
 
 		case Company:
 			CompanyFacade companyFacade = new CompanyFacade();
-			companyFacade.login(name, password, cType); 
-			//TODO - DailyCouponExpirationTask
-			return companyFacade; 
+			if (companyFacade.login(name, password, cType))  { 
+				return companyFacade;
+				// TODO - DailyCouponExpirationTask
+			}
+			else { 
+				JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+				JOptionPane.showMessageDialog(frame, "The login failed, the Name or Password of the Company is not valid, please try again !!!!");
+				return null; 
+			}
+			
 		}
-
 		return null;
-	}
-	
-	public void ShutDown() { 
 		
-		//TODO - Close all the connectionPool
-		//TODO - Stop the DailyTask 
+
+	}
+
+	public void ShutDown() throws Exception {
+
+		ConnPool.getInstance().closeAllConnections(); 
+		// TODO - Stop the DailyTask
 	}
 
 }
-
