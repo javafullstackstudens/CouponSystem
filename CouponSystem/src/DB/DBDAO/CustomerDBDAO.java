@@ -22,6 +22,7 @@ import com.sun.org.apache.bcel.internal.generic.I2D;
 import com.sun.webkit.ThemeClient;
 import com.sun.xml.internal.bind.v2.TODO;
 
+import DB.ConnPool;
 import DB.DBException;
 import DB.DAO.CustomerDAO;
 import JavaBeans.Company;
@@ -62,14 +63,14 @@ public class CustomerDBDAO implements CustomerDAO {
 	 *********************************************/
 	@Override
 	public void createCustomer(Customer customer) throws DBException {
-		// TODO Auto-generated method stub
-		// Open a connection
+
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		// Define the Execute query
 		String sql = "INSERT INTO CUSTOMER (CUST_NAME,PASSWORD) VALUES (?,?)";
 		PreparedStatement pstmt = null;
@@ -86,14 +87,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -109,13 +110,15 @@ public class CustomerDBDAO implements CustomerDAO {
 		// retrieve the PK by the customer name
 		Customer customerLocaly = new Customer() ; 
 		customerLocaly = getCustomer(customer.getCustomerName()); 
-		// Open a connection
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
+		//Create the SQL query 
 		String sql = "DELETE FROM CUSTOMER WHERE id=?";
 		PreparedStatement pstmt = null;
 		try {
@@ -134,14 +137,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -155,13 +158,14 @@ public class CustomerDBDAO implements CustomerDAO {
 		allCoupons = getCustomerCoupons(customer);
 
 		long id;
-		// Open a connection
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e2) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
-
+		//Create the SQL query 
 		String sql = "DELETE FROM CUSTOMER_COUPON WHERE COUPON_ID=?";
 		PreparedStatement pstmt = null;
 
@@ -189,14 +193,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -207,14 +211,14 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public void updateCustomer(Customer customer) throws DBException {
 
-		// retrieve the PK by the customer name
+		// retrieve the customer details from DB 
 		Customer customerLocaly = new Customer() ; 
 		customerLocaly = getCustomer(customer.getCustomerName()); 
-		// Open a connection
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// create the Execute query
@@ -233,14 +237,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (pstms != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -252,13 +256,14 @@ public class CustomerDBDAO implements CustomerDAO {
 	public Customer getCustomer(long id) throws DBException {
 
 		Customer customer = new Customer();
-		// Open a connection
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		java.sql.Statement stmt = null;
 
 		try {
@@ -279,14 +284,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -302,12 +307,13 @@ public class CustomerDBDAO implements CustomerDAO {
 		Customer customerLocaly = new Customer();
 		customerLocaly = getCustomer(customer.getCustomerName());
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		// Define the Execute query
 		java.sql.Statement stmt = null;
 		java.sql.Statement stmt1 = null;
@@ -356,19 +362,18 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
-
 		}
-		System.out.println(coupons);
+
 		return coupons;
 	}
 
@@ -377,12 +382,13 @@ public class CustomerDBDAO implements CustomerDAO {
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
 		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		java.sql.Statement stmt = null;
 
 		try {
@@ -415,14 +421,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -439,17 +445,16 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	@Override
 	public Set<Customer> getAllCustomer() throws DBException {
-		// TODO Auto-generated method stub
 
 		Set<Customer> customers = new HashSet<Customer>();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		java.sql.Statement stmt = null;
 
 		try {
@@ -474,14 +479,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -492,16 +497,15 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	public void printAllCustmers() throws DBException {
 
-		// TODO Auto-generated method stub
 		Customer customer = new Customer();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		java.sql.Statement stmt = null;
 
 		try {
@@ -526,14 +530,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -544,10 +548,11 @@ public class CustomerDBDAO implements CustomerDAO {
 	public Customer getCustomer(String CUST_NAME) throws DBException {
 
 		Customer customer = new Customer();
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		java.sql.Statement stmt = null;
@@ -576,14 +581,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -593,12 +598,12 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	public void purchaseCoupon(Coupon coupon, Customer customer) throws DBException {
 
-		long id_inc = 0;
-		// Open a connection
+		long idPK = 0;
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 
@@ -614,14 +619,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			ResultSet resultSet = stmt.executeQuery(sql1);
 			while (resultSet.next()) {
 				if (coupon.getTitle().equals(resultSet.getString(2))) {
-					id_inc = resultSet.getLong(1);
+					idPK = resultSet.getLong(1);
 				}
 			}
 
 			// constructor the object, retrieve the attributes from the results
 			pstmt = conn.prepareStatement(sql2);
 			pstmt.setLong(1, customer.getId());
-			pstmt.setLong(2, id_inc);
+			pstmt.setLong(2, idPK);
 			pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -631,14 +636,14 @@ public class CustomerDBDAO implements CustomerDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 

@@ -68,7 +68,6 @@ public class ConnPool {
 		}
 	}
 	
-	
 	public static ConnPool getInstance() throws Exception {
 		
 		if (instance==null){
@@ -83,17 +82,15 @@ public class ConnPool {
 		return instance;
 	}
 	
-	public synchronized Connection getConnection()throws Exception { 
+	public synchronized Connection getConnection()throws DBException { 
 		try{
 			Connection c=conQ.poll();
 			c.setAutoCommit(true);
 			return c;
 		} catch (SQLException e) {
-//			throw new CouponException("failed to connect server");
-			e.printStackTrace();
+			
+			throw new DBException("failed to connect server");			
 		}
-		return null;
-	  
 	}
 	
 	public synchronized void returnConnection(Connection connection) {

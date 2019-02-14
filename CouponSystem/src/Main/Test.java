@@ -12,6 +12,7 @@ import javax.swing.text.StyledEditorKit.ForegroundAction;
 import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
+import DB.ConnPool;
 import DB.Database;
 import DB.DBDAO.CompanyDBDAO;
 import DB.DBDAO.CouponDBDAO;
@@ -31,9 +32,9 @@ public class Test {
 		
 //		Database.getDatabase(); 
 		
-		Company company = new Company(2, "Phoebus", "12345", "oriel@test.com");
-		Coupon coupon = new Coupon(4, "TestType", Utils.getDate(), Utils.endDate(20),7000, CouponType.CAMPING,"wtf", 1251, "image");
-		Customer customer = new Customer(3, "Oriel", "1234");
+		Company company = new Company(2, "Mellanox", "12345", "oriel@test.com");
+		Coupon coupon = new Coupon(4, "ConnPool", Utils.getDate(), Utils.endDate(20),7000, CouponType.CAMPING,"wtf", 1251, "image");
+		Customer customer = new Customer(3, "Snir", "1234");
 		Customer customer2 = new Customer(4,"Evi", "221284");
 		Coupon coupon1 = new Coupon(3, "Omer", Utils.getDate(), Utils.endDate(60),5555, CouponType.HEALTH,"wtf", 1251, "image");
 		Company company2 = new Company(3, "mPrest", "12345", "oriel@test.com"); 
@@ -43,9 +44,9 @@ public class Test {
 //        adminFacade.removeCompany(company);
 //        CouponDBDAO couponDBDAO = new CouponDBDAO(); 
 //        couponDBDAO.removeCoupon(coupon1);
-//        adminFacade.createCustomer(customer);
+        adminFacade.createCustomer(customer);
 //        adminFacade.createCustomer(customer2);
-//        adminFacade.createCompany(company);
+        adminFacade.createCompany(company);
 //        adminFacade.login("Mashav", "12345", clientType.Admin); 
 //        adminFacade.updateCompany(company,"Ee123456","Evi.cohen@gmail.com");
 //       Set<Company> companies = new HashSet<Company>(); 
@@ -66,16 +67,18 @@ public class Test {
 //        companyFacade.createCoupon(coupon);
 //        System.out.println(companyFacade.getAllCoupons()); 
 //		companyFacade.removeCoupon(coupon1);
-//		companyFacade.createCoupon(coupon);
-		System.out.println(companyFacade.getCouponsByexpiredDate(Utils.endDate(10)));
+		companyFacade.createCoupon(coupon);
+
 
         
     
     /****************************Test-PurchasedCoupon*****************************/
 
-//        CustomerFacade customerFacade = new CustomerFacade(); 
-//        customerFacade.login(customer.getCustomerName(),customer.getPassword(),clientType.Customer); 
-//        customerFacade.purchaseCoupon(coupon1);
+        CustomerFacade customerFacade = new CustomerFacade(); 
+        customerFacade.login(customer2.getCustomerName(),customer2.getPassword(),clientType.Customer); 
+//        System.out.println(customerFacade.getAllPurchasedCoupons());  
+        System.out.println(customerFacade.getAllPurchasedCouponsByPrice(1251));
+
         
 
 		

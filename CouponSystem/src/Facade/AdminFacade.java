@@ -74,7 +74,7 @@ public class AdminFacade implements CouponClientFacade {
 		}
 		compDAO.createCompany(company);
 		JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-		JOptionPane.showMessageDialog(frame, "Company " + company.getCompName() + "Created");
+		JOptionPane.showMessageDialog(frame, "Company " + company.getCompName() + " Created");
 
 	}
 

@@ -18,6 +18,7 @@ import org.apache.derby.impl.sql.execute.UpdateConstantAction;
 import com.sun.org.apache.xerces.internal.util.Status;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
+import DB.ConnPool;
 import DB.DBException;
 import DB.DAO.CouponDAO;
 import JavaBeans.Coupon;
@@ -66,9 +67,10 @@ public class CouponDBDAO implements CouponDAO {
 		allCoupons = getAllCoupouns();
 		Iterator<Coupon> itr = allCoupons.iterator();
 
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e2) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// Define the Execute query
@@ -98,14 +100,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -119,9 +121,10 @@ public class CouponDBDAO implements CouponDAO {
 		allCoupons = getAllCoupouns();
 		Iterator<Coupon> itr = allCoupons.iterator();
 
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e2) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 
@@ -155,14 +158,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -175,13 +178,12 @@ public class CouponDBDAO implements CouponDAO {
 		allCoupons = getAllCoupouns();
 		Iterator<Coupon> itr = allCoupons.iterator();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e2) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
-
 		String sql = "DELETE FROM COMPANY_COUPON WHERE COUPON_ID=?";
 		PreparedStatement pstmt = null;
 
@@ -210,14 +212,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -232,11 +234,13 @@ public class CouponDBDAO implements CouponDAO {
 		allCoupons = getAllCoupouns();
 		Iterator<Coupon> itr = allCoupons.iterator();
 
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		// create the Execute query
 		PreparedStatement pstms = null;
 		String sqlString = "UPDATE COUPON SET START_DATE = ?, END_DATE = ? WHERE ID = ? ";
@@ -262,14 +266,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstms != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -282,10 +286,10 @@ public class CouponDBDAO implements CouponDAO {
 	public Coupon getCoupon(long id) throws DBException {
 		Coupon coupon = new Coupon();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// Define the Execute query
@@ -317,14 +321,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -337,10 +341,10 @@ public class CouponDBDAO implements CouponDAO {
 
 		Set<Coupon> coupons = new HashSet<Coupon>();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// Define the Execute query
@@ -376,14 +380,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -395,10 +399,10 @@ public class CouponDBDAO implements CouponDAO {
 
 		Coupon coupon = new Coupon();
 
-		// Open a connection
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// Define the Execute query
@@ -434,14 +438,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -452,10 +456,11 @@ public class CouponDBDAO implements CouponDAO {
 	public synchronized Set<Coupon> getCouponByType(Coupon coupon) throws DBException {
 
 		Set<Coupon> coupons = new HashSet<Coupon>();
-		// Open a connection
+
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 		// Define the Execute query
@@ -497,14 +502,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (stmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -516,11 +521,13 @@ public class CouponDBDAO implements CouponDAO {
 	public void createCoupon(Coupon coupon, long comp_id) throws DBException {
 
 		this.id = comp_id;
-		long id_inc = 0;
-		// Open a connection
+		long idPK= 0;
+
+		
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
 
@@ -548,12 +555,12 @@ public class CouponDBDAO implements CouponDAO {
 			stmt = conn.createStatement();
 			ResultSet resultSet = stmt.executeQuery(sql3);
 			while (resultSet.next()) {
-				id_inc = resultSet.getLong(1);
+				idPK = resultSet.getLong(1);
 			}
 			// constructor the object, retrieve the attributes from the results
 			pstmt2 = conn.prepareStatement(sql2);
 			pstmt2.setLong(1, comp_id);
-			pstmt2.setLong(2, id_inc);
+			pstmt2.setLong(2, idPK);
 			pstmt2.executeUpdate();
 
 		} catch (SQLException e) {
@@ -563,14 +570,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 
@@ -580,13 +587,14 @@ public class CouponDBDAO implements CouponDAO {
 
 	@Override
 	public void createCoupon(Coupon coupon) throws DBException {
-		// TODO Auto-generated method stub
-		// Open a connection
+
+		// Open a connection from the connection pool class 
 		try {
-			conn = DriverManager.getConnection(Utils.getDBUrl());
-		} catch (SQLException e1) {
+			conn =ConnPool.getInstance().getConnection();
+		} catch (Exception e) {
 			throw new DBException("The Connection is faild");
 		}
+		
 		// Define the Execute query
 		String sql = "INSERT INTO COUPON (TITLE,START_DATE,END_DATE,AMOUNT,TYPE,MESSAGE,PRICE,IMAGE)  VALUES(?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = null;
@@ -610,14 +618,14 @@ public class CouponDBDAO implements CouponDAO {
 			// finally block used to close resources
 			try {
 				if (pstmt != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 			try {
 				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
+					ConnPool.getInstance().returnConnection(conn);
+			} catch (Exception e) {
 				throw new DBException("The close connection action faild");
 			}
 

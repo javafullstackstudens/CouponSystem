@@ -220,7 +220,7 @@ public class CompanyFacade implements CouponClientFacade {
 		
 	}	
 	
-	public synchronized Set<Coupon> getCouponsByexpiredDate(java.util.Date date) throws DBException {
+	public synchronized Set<Coupon> getCouponsByExpiredDate(java.util.Date date) throws DBException {
 		
 		Set<Coupon> coupons2 = new HashSet<Coupon>();
 		Set<Coupon> coupons = new HashSet<Coupon>();
