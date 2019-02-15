@@ -86,7 +86,7 @@ public class Test {
         
         /*********Company************/
         CompanyFacade companyFacade = new CompanyFacade(); 
-        companyFacade = (CompanyFacade) CouponSystem.getCouponSystem().login("Phoebus", "123456",clientType.Company);
+        companyFacade = (CompanyFacade) CouponSystem.getCouponSystem().login("Phoebus", "123457",clientType.Company);
         if(companyFacade!=null) { 
         	System.out.println(companyFacade.getCompanyCoupons(companyFacade.getCompany("Phoebus")));
         }
